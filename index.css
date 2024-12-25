@@ -1,9 +1,9 @@
-.web-standard,.web-subscription,.web-aboutitem,a{cursor: pointer;}
+.web-standard,.web-subscription,.web-toggle,button,.web-aboutitem,a{cursor: pointer;}
 nav{
     max-width: 500px;
 }
 .web-navbar{
-    background: green;
+    background: rgb(248, 248, 248);
     height: 70px;
     position: sticky;
     top: 0;
@@ -33,6 +33,11 @@ nav{
     display: flex;
     flex-direction: column;
     align-items: center;
+    border-radius: 6px;
+    border: 0.5px solid lightgrey;
+    max-width: 250px;
+    margin: auto;
+    padding: 10px;
 }
 
 .web-features{
@@ -40,6 +45,20 @@ nav{
     flex-direction: column;
 }
 
+.features{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+button{
+    background: skyblue;
+    border: skyblue;
+    color: #ffffff;
+    border-radius: 5px;
+    font-weight: 600;
+    font-size: 17px;
+}
 .standard{
     border: lightgreen;
     background: lightgreen;
@@ -51,6 +70,19 @@ nav{
 .web-innercontent{
     transform: translateX(-100%);
     transition: transform 0.3s ease-in;
+}
+
+.web-faqs{
+    max-width: 300px;
+    margin: 3px auto 3px auto;
+}
+
+.questions{
+    background: red;
+    border: #ffffff;
+    border-radius: 6px;
+    margin: 3px;
+    padding: 10px;
 }
 
 h5{text-align: center; font-weight: 800;font-size: 40px;}
