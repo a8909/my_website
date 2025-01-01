@@ -8,7 +8,7 @@ const webFaq = document.querySelector('.web-faqs');
 
 let display = false;
 let div = document.createElement('div');
-let idIndex = 0;
+let idIndex = {};
 webAbout.forEach((w) => {
     const aboutItem = document.createElement('div');
     aboutItem.classList.add('web-aboutitem')
@@ -50,34 +50,49 @@ subscription.forEach((plan) => {
             let premium = document.querySelector('.web-subscription.standard');
             if (premium){
                 premium.classList.remove('standard');
+                plan.classList.add('standard');
             }
             updateSubscription('standard');
         }
     }   
 })  
 })
-toggle.addEventListener('click', function showHide(){
-    display =! display;
-    if(display){
-        toggle.textContent = 'close';
-        div.style.visibility = 'visibe';
-        subscription.forEach((plan)=>{
-            if(plan.textContent == 'Standard'){
-                updateSubscription('standard');
-            }
-            updateSubscription('premium');
-        } )
-    }else{
-        toggle.textContent = 'open';
-        subscription.forEach(plan=>{
-            if(plan.textContent == 'Premium' || plan.textContent == 'Standard'){
-                div.textContent = null;
-            }
-        })
+// toggle.addEventListener('click', function showHide(){
+//     display =! display;
+//     if(display){
+//         toggle.textContent = 'close';
+//         div.style.visibility = 'visibe';
+//         subscription.forEach((plan)=>{
+//             if(plan.textContent == 'Standard'){
+//                 console.log('standard is called');
+//                 updateSubscription('standard');
+//             }else{
+//                 console.log(true)
+//                 updateSubscription('premium');
+//             }
+//         } )
+//     }else{
+//         toggle.textContent = 'open';
+//         subscription.forEach(plan=>{
+//             if(plan.textContent == 'Premium' ){
+//                 div.textContent = null;
+//             }
+//         })
         
-    }
-})
+//     }
+// })
 
+div.classList.add('features');
+const subscriptionbtn = 'sub-btn';
+const webFeatureslist = 
+        `<ol>
+        <li>Ability to change bought website template for free first time</li>
+        <li>Good user experience and feels for all user across all screen</li>
+        <li>Once bought you are the sole owner of the website.</li></ol>
+        <button class='${subscriptionbtn}'>Show Templates</button>
+        `
+        div.innerHTML = webFeatureslist;
+        webFeatureParentdiv.append(div);
 
 function updateSubscription(subcriptionPacakge){
     let price = document.querySelector('.web-amount');
@@ -89,13 +104,14 @@ function updateSubscription(subcriptionPacakge){
         <li>Ability to change bought website template for free first time</li>
         <li>Good user experience and feels for all user across all screen</li>
         <li>Once bought you are the sole owner of the website.</li></ol>
-        <button>Buy now</button>
+        <button class='${subscriptionbtn}'>Show Templates</button>
         `
         div.innerHTML = webFeatureslist;
         webFeatureParentdiv.append(div);
     }else{
         price.textContent = '#50,000';
         div.classList.add('features');
+        const standardbtn = 'std-btn'
         const webFeatureslist = 
         `<ol>
         <li>Ability to make changes to website design and also make unlimited changes offers by our developer</li>
@@ -103,17 +119,43 @@ function updateSubscription(subcriptionPacakge){
         <li>Once bought you are the sole owner of the website.</li>
         <li>Access to FAQS features on the wesite</li>
         <li>Easy access to connect your communication line e.g (WhatsApp, Email and any other service platform)</li></ol>
-        <button>Buy now</button>
+        <button class='${standardbtn}'>Show Templates</button>
         `
         div.innerHTML = webFeatureslist;
-        webFeatureParentdiv.append(div)
+        webFeatureParentdiv.append(div);
+        
         }  
 }
 
-const faqs = [{id: 1, question: "What is my website", answer : ""},{id: 2, question: "What does my webite have to offer", answer: ""},{id: 1, question: "What is my website", answer : ""},{id: 1, question: "What is my website", answer: ""},{id: 1, question: "What is my website",  answer: ""},]
-faqs.forEach((faq)=>{
+
+function showTemplate(subBtn){
+    if(subBtn == 'premium'){
+        console.log('premium');
+    }else{
+        console.log('standard');
+    }
+    
+}
+const premimShowtemplate = document.querySelector('.sub-btn');
+const standardShowtemplate = document.querySelector('.std-btn');
+premimShowtemplate.addEventListener("click", function premium(){
+});
+// standardShowtemplate.addEventListener('click', showTemplate('premim'));
+
+
+const faqs = [
+    {id: 1, question: "What is MY WEBSITE ?", answer : "MY WEBITE is a wesite where you can buy your fully made & ready to use wesite, webApp and mobile App at a very minimal price."},
+    {id: 2, question: "What does my webite have to offer ?", answer: "Fully made and ready to use website for all businesses, webApp and mobile App for all businesses."},
+    {id: 3, question: "How do i get my brand design inserted into the template after buying ?", answer : "After a template is bought and payment is made, at the bottom right of the website click the whatsapp logo to notify MY WEBSITE, after which you get to send your brand logo, color and other neccessary features of the template feature you bought."},
+    {id: 4, question: "How will my bought website be deloyed ?", answer: "You will have to buy a domain for deployement from MY WEBSITE, after which notify MY WEBITE to deploy it for you."},
+    {id: 5, question: "After my bought website expired what next ?",  answer: "After expiration of the domain subscription it is required for the owner to renue."},
+    {id: 6, question: "Who will be maintainig the webite after buying ?",  answer: "MY WEBSITE is to do that with additional charges."},
+    {id: 7, question: "How do i renew my domain plan ?",  answer: "Make use of the whatsapp logo at the bottom right of MY WEBSITE to notify MY WEBSITE, you will be required the brand name, domain of the brand before renewal"},
+]
+faqs.forEach((faq, index)=>{
     let question = document.createElement('div');
     question.classList.add('questions');
+    question.setAttribute('faqIndex',index);
     const answer = 'answer';
     const option = 'question';
     const questions = 
@@ -123,14 +165,14 @@ faqs.forEach((faq)=>{
     webFaq.append(question);
 })
 
-// h6.forEach(answer => {
-//     answer.addEventListener('click', function showAnswer(){
-//         console.log('me')
-//         faqs.forEach((f, index)=>{
-//             idIndex = f[index].id;
-//             if(f[index].id == idIndex){
-//                 console.log('correct');
-//             }
-//         })
-//     })
-// });
+const faqQuestions = document.querySelectorAll('.questions');
+faqQuestions.forEach(answer => {
+    answer.addEventListener('click', function showAnswer(){
+        const index = answer.getAttribute('faqIndex');
+        idIndex = faqs[index];
+        let displayFaqAnswer = answer.querySelector('.answer');
+        if(idIndex == faqs[index]){
+          displayFaqAnswer.classList.add('show');
+        }
+    })
+});

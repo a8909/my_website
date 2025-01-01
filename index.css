@@ -1,4 +1,4 @@
-.web-standard,.web-subscription,.web-toggle,button,.web-aboutitem,a{cursor: pointer;}
+.questions,.web-standard,.web-subscription,.web-toggle,button,.web-aboutitem,a{cursor: pointer;}
 nav{
     max-width: 500px;
 }
@@ -58,6 +58,7 @@ button{
     border-radius: 5px;
     font-weight: 600;
     font-size: 17px;
+    padding: 8px;
 }
 .standard{
     border: lightgreen;
@@ -70,25 +71,79 @@ button{
 .web-innercontent{
     transform: translateX(-100%);
     transition: transform 0.3s ease-in;
+    margin-top: 20px;
 }
 
+.web-modalcontainer{
+    width: 100vw;
+    height: 100vh;
+    background: rgb(146, 146, 146);
+}
+
+.p{
+    line-height: 16px;
+}
 .web-faqs{
-    max-width: 300px;
+    max-width: 1200px;
     margin: 3px auto 3px auto;
 }
 
+.answer{
+    color: grey;
+    display: none;
+    font-weight: 600;
+    transform: translateY(-10px);
+    transition: tranform 0.3s ease-in;
+}
+
+.show{
+    display: block;
+    transform: translateY(0);
+    transition: transform 0.3s ease-out;
+}
+
 .questions{
-    background: red;
-    border: #ffffff;
+    background: rgb(248, 248, 248);
     border-radius: 6px;
     margin: 3px;
     padding: 10px;
+    box-shadow: 0 4px 8px 0 rgba(116, 115, 115, 0.1), 0 6px 20px 0 rgba(124, 123, 123, 0.19);
 }
 
+.contact{
+    font-size: 30px;
+    font-weight: 600;
+    opacity: 1;
+}
+
+.innerfooter{
+    background: rgba(211, 211, 211, 0.3);
+}
+
+.footername{
+    font-size: 40px;
+    font-weight: 800;
+}
+
+.footer{
+    background: black;
+    color: #ffffff;
+}
+
+.footer-content:first-child{
+    display: flex;
+    flex-direction: column;
+    gap: 1px;
+}
+
+
+h6{
+    font-weight: bold;
+}
 h5{text-align: center; font-weight: 800;font-size: 40px;}
 
 .web-more{
-    max-width: 700px;
+    max-width: 1000px;
     font-weight: 600;
     font-size: 23px;
 }
@@ -111,7 +166,7 @@ h5{text-align: center; font-weight: 800;font-size: 40px;}
 .web-aboutitem{
     background: skyblue;
     width: 250px;
-    margin: 0px 10px 10px 0px;
+    margin: 0px 10px 10px 10px;
     padding: 10px;
     border-radius: 5px;
 }
