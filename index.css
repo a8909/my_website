@@ -1,3 +1,6 @@
+body{
+    overflow-x: hidden;
+}
 .questions,.web-standard,.web-subscription,.web-toggle,button,.web-aboutitem,a{cursor: pointer;}
 nav{
     max-width: 500px;
@@ -75,9 +78,44 @@ button{
 }
 
 .web-modalcontainer{
+    display: none;
+}
+.modal-display{
     width: 100vw;
-    height: 100vh;
-    background: rgb(146, 146, 146);
+    height: 52vh;
+    background: rgb(255 255 255 / 30%);
+    z-index: 100;
+    position: absolute;
+    backdrop-filter: blur(10px);
+    display: block;
+}
+
+.modal-bdy{
+    background: #ffffff;
+    z-index: 1500;
+    position: absolute;
+    right: 0;
+    left: 0;
+    margin: 0px auto 0px auto;
+    max-width: 1000px;
+    border-radius: 3px;
+    box-shadow: 0 4px 8px 0 rgba(116, 115, 115, 0.1), 0 6px 20px 0 rgba(124, 123, 123, 0.19) ;
+    @media(max-width: 1043px){
+        max-width: 500px;
+    }
+    @media(max-width: 541px){
+        max-width: 300px;
+    }
+}
+
+.modal-content{
+    display: grid;
+    grid-template-columns: auto auto;
+    justify-content: space-around;
+    @media(max-width: 541px) {
+        grid-template-columns: auto;
+        overflow-y: visible;
+    }
 }
 
 .p{
@@ -86,6 +124,15 @@ button{
 .web-faqs{
     max-width: 1200px;
     margin: 3px auto 3px auto;
+    @media(max-width: 1115px){
+        max-width: 600px;
+    }
+    @media(max-width: 640px){
+        max-width: 500px;
+    }
+    @media(max-width: 533px){
+        max-width: 300px;
+    }
 }
 
 .answer{
@@ -166,7 +213,7 @@ h5{text-align: center; font-weight: 800;font-size: 40px;}
 .web-aboutitem{
     background: skyblue;
     width: 250px;
-    margin: 0px 10px 10px 10px;
+    margin: 0px 10px 13px 10px;
     padding: 10px;
     border-radius: 5px;
 }
@@ -174,7 +221,7 @@ h5{text-align: center; font-weight: 800;font-size: 40px;}
 .web-aboutitem:hover{
     width: 300px;
     transform: translateY(10px);
-    transition: transform 0.3s ease-in-out;
+    transition: all 0.3s ease-in-out;
 }
 
 .web-aboutid{
@@ -190,6 +237,11 @@ h5{text-align: center; font-weight: 800;font-size: 40px;}
 
 .web-abouttxt{
     font-weight: 600;
+}
+
+.web-aboutid,.web-abouttxt:hover{
+    font-weight: bold;
+    transition: font-weight 0.3s ease-in-out;
 }
 
 img{

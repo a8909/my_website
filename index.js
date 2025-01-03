@@ -5,6 +5,8 @@ const subscription = document.querySelectorAll('.web-subscription');
 const toggle = document.querySelector('.web-toggle');
 const webFeatureParentdiv = document.querySelector('.web-features');
 const webFaq = document.querySelector('.web-faqs');
+const backdrop = document.querySelector('.web-modalcontainer');
+let displayAnswer = false;
 
 let display = false;
 let div = document.createElement('div');
@@ -38,7 +40,7 @@ subscription.forEach((plan) => {
     plan.addEventListener('click', function checkSubscription(){
     if(plan.textContent === 'Premium'){
         let premium = document.querySelector('.web-subscription');
-        let standard = document.querySelector('.web-subscription.standard');
+        let standard = document.querySelector('div,.web-subscription.standard');
         if (standard){
             standard.classList.remove('standard');
             premium.classList.add('standard');
@@ -129,8 +131,7 @@ function updateSubscription(subcriptionPacakge){
 
 
 function showTemplate(subBtn){
-    if(subBtn == 'premium'){
-        console.log('premium');
+    if(subBtn === 'premium'){
     }else{
         console.log('standard');
     }
@@ -139,9 +140,13 @@ function showTemplate(subBtn){
 const premimShowtemplate = document.querySelector('.sub-btn');
 const standardShowtemplate = document.querySelector('.std-btn');
 premimShowtemplate.addEventListener("click", function premium(){
+    backdrop.classList.add('modal-display');
 });
 // standardShowtemplate.addEventListener('click', showTemplate('premim'));
-
+backdrop.addEventListener('click', function closeModal(){
+    backdrop.classList.remove('modal-display');
+    
+});
 
 const faqs = [
     {id: 1, question: "What is MY WEBSITE ?", answer : "MY WEBITE is a wesite where you can buy your fully made & ready to use wesite, webApp and mobile App at a very minimal price."},
@@ -168,11 +173,18 @@ faqs.forEach((faq, index)=>{
 const faqQuestions = document.querySelectorAll('.questions');
 faqQuestions.forEach(answer => {
     answer.addEventListener('click', function showAnswer(){
-        const index = answer.getAttribute('faqIndex');
-        idIndex = faqs[index];
+        displayAnswer =! displayAnswer
         let displayFaqAnswer = answer.querySelector('.answer');
-        if(idIndex == faqs[index]){
-          displayFaqAnswer.classList.add('show');
+        if(displayAnswer){
+             const index = answer.getAttribute('faqIndex');
+            idIndex = faqs[index];
+            
+            if(idIndex == faqs[index]){
+                displayFaqAnswer.classList.add('show');
+            }
+        }else{
+            displayFaqAnswer.classList.remove('show');
         }
+       
     })
 });
