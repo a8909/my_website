@@ -11,6 +11,32 @@ let displayAnswer = false;
 let display = false;
 let div = document.createElement('div');
 let idIndex = {};
+
+//This is used to target the scroll using getBoundingClientReact(),
+//if the react.top <= window.innerHeight means the element top is below the window inner height the effect come alive
+// and when the react.bottom >- 0 the effect leaves and this function needs to be called inside handleScroll
+//handleScroll add and remove the style based on scroll
+//window.addeventlistenerlisten to scroll and then call handleScroll for the function to come alive
+//document.addevenlitener is call when the DOM load the content is called and when called it triggers the  handleScroll function
+function isElementInView(elemment){
+    const react = elemment.getBoundingClientRect();
+    return react.top <=  window.innerHeight && react.bottom >= 0;
+}
+function handleScroll(){
+    const aboutUs = document.querySelector('#about');
+    const webMore = aboutUs.querySelector('.web-more');
+    if(isElementInView(aboutUs)){
+        webMore.classList.add('slideIn');
+        webMore.classList.remove('fade-out')
+    }else{
+        webMore.classList.add('fade-out');
+        webMore.classList.remove('slideIn');
+    }
+}
+window.addEventListener('scroll', handleScroll);
+document.addEventListener('DOMContentLoaded', handleScroll);
+
+// This populate the about us
 webAbout.forEach((w) => {
     const aboutItem = document.createElement('div');
     aboutItem.classList.add('web-aboutitem')
@@ -20,27 +46,36 @@ webAbout.forEach((w) => {
     aboutItem.innerHTML = aboutContent;
     about.append(aboutItem)
 });
+
+//This makes a slide in effect if placed on an object
 window.addEventListener('load', onAnimate());
 function onAnimate() {
     const webContent = document.querySelector('.web-innercontent');
     webContent.classList.add('slideIn');
 }
+//This make the whatsapp link active if clicked.
 webContact.addEventListener('click',function directToWhatsapp(){
     const whatsappUrl = 'https://wa.me/qr/TZVWNZ7JYEP6M1';
     window.open(whatsappUrl);
 });
+//scroll function is used for adjusting the whatsapp image on scroll event 
 window.addEventListener('scroll', function move(){
      setInterval(() => {
         webContact.classList.add('shift');
     }, 1000);
+    const webMore = document.querySelector('.web-more');
+    if(webMore.scr)
     this.clearInterval(2000);
     webContact.classList.remove('shift');
 })
 subscription.forEach((plan) => {
     plan.addEventListener('click', function checkSubscription(){
+        // This line checks if the click event is premium
+        //if premium it checks again if the premium has the class .standard, which by defualt it has
+        //if the click is standard then it remove the standard class from premium and add it to his, and vice-versa.
     if(plan.textContent === 'Premium'){
         let premium = document.querySelector('.web-subscription');
-        let standard = document.querySelector('div,.web-subscription.standard');
+        let standard = document.querySelector('.web-subscription.standard');
         if (standard){
             standard.classList.remove('standard');
             premium.classList.add('standard');
@@ -84,6 +119,8 @@ subscription.forEach((plan) => {
 //     }
 // })
 
+//function here checkes as click event is active for standard/premium and it update the content
+//with respect to the value (if standard/premium).
 div.classList.add('features');
 const subscriptionbtn = 'sub-btn';
 const webFeatureslist = 
@@ -99,7 +136,7 @@ const webFeatureslist =
 function updateSubscription(subcriptionPacakge){
     let price = document.querySelector('.web-amount');
     if(subcriptionPacakge == 'premium'){
-        price.textContent = '#10,000';
+        price.textContent = '#30,000';
         div.classList.add('features');
         const webFeatureslist = 
         `<ol>
@@ -129,25 +166,18 @@ function updateSubscription(subcriptionPacakge){
         }  
 }
 
-
-function showTemplate(subBtn){
-    if(subBtn === 'premium'){
-    }else{
-        console.log('standard');
-    }
-    
-}
+//This button is check to display modal, check if standard/premium 
+const aboutContainer = document.querySelector('.web-about');
 const premimShowtemplate = document.querySelector('.sub-btn');
 const standardShowtemplate = document.querySelector('.std-btn');
 premimShowtemplate.addEventListener("click", function premium(){
     backdrop.classList.add('modal-display');
-});
-// standardShowtemplate.addEventListener('click', showTemplate('premim'));
-backdrop.addEventListener('click', function closeModal(){
-    backdrop.classList.remove('modal-display');
-    
+    aboutContainer.classList.add('more-margin');
 });
 
+
+
+//This is for the faqs
 const faqs = [
     {id: 1, question: "What is MY WEBSITE ?", answer : "MY WEBITE is a wesite where you can buy your fully made & ready to use wesite, webApp and mobile App at a very minimal price."},
     {id: 2, question: "What does my webite have to offer ?", answer: "Fully made and ready to use website for all businesses, webApp and mobile App for all businesses."},
@@ -157,6 +187,10 @@ const faqs = [
     {id: 6, question: "Who will be maintainig the webite after buying ?",  answer: "MY WEBSITE is to do that with additional charges."},
     {id: 7, question: "How do i renew my domain plan ?",  answer: "Make use of the whatsapp logo at the bottom right of MY WEBSITE to notify MY WEBSITE, you will be required the brand name, domain of the brand before renewal"},
 ]
+
+//loop through faqs array, then create a div that will wrap each questin, answer
+//first it add a questions class to the question div and set attribute
+//set attribute is been used to retrive the index of the array and display the answer, of the clicked question.  
 faqs.forEach((faq, index)=>{
     let question = document.createElement('div');
     question.classList.add('questions');
@@ -168,8 +202,11 @@ faqs.forEach((faq, index)=>{
     <span class= ${answer}>${faq.answer}</span>`;
     question.innerHTML = questions;
     webFaq.append(question);
-})
+});
 
+//loop through all the questions to get each answer.
+//listen to click, if click the displayAnswer is a boolean which act with respect to click event
+//if true,it get the attribute of the question to display the answer otherwise it coses the answer
 const faqQuestions = document.querySelectorAll('.questions');
 faqQuestions.forEach(answer => {
     answer.addEventListener('click', function showAnswer(){
@@ -185,6 +222,57 @@ faqQuestions.forEach(answer => {
         }else{
             displayFaqAnswer.classList.remove('show');
         }
-       
     })
 });
+
+
+//This request should be coming from an end point not doing it like this 
+//This list here is meant to display all website template image from backEnd.
+const templateImages = [
+    {id: 1, tempImg: "https://colorlib.com/wp/wp-content/uploads/sites/2/tri-o-beautiful-website-template.jpg.avif"},
+    {id: 2, tempImg: "https://colorlib.com/wp/wp-content/uploads/sites/2/tri-o-beautiful-website-template.jpg.avif"},
+    {id: 3, tempImg: "https://colorlib.com/wp/wp-content/uploads/sites/2/tri-o-beautiful-website-template.jpg.avif"},
+    {id: 4, tempImg: "https://colorlib.com/wp/wp-content/uploads/sites/2/tri-o-beautiful-website-template.jpg.avif"},
+    {id: 5, tempImg: "https://colorlib.com/wp/wp-content/uploads/sites/2/tri-o-beautiful-website-template.jpg.avif"},
+    {id: 6, tempImg: "https://colorlib.com/wp/wp-content/uploads/sites/2/tri-o-beautiful-website-template.jpg.avif"},
+    {id: 7, tempImg: "https://colorlib.com/wp/wp-content/uploads/sites/2/tri-o-beautiful-website-template.jpg.avif"},
+    {id: 8, tempImg: "https://colorlib.com/wp/wp-content/uploads/sites/2/tri-o-beautiful-website-template.jpg.avif"},
+    {id: 9, tempImg: "https://colorlib.com/wp/wp-content/uploads/sites/2/tri-o-beautiful-website-template.jpg.avif"},
+    {id: 10, tempImg: "https://colorlib.com/wp/wp-content/uploads/sites/2/tri-o-beautiful-website-template.jpg.avif"},
+]
+
+templateImages.forEach((image, identifier)=>{
+    let templatDiv = document.createElement('div');
+    templatDiv.classList.add('template-div')
+    templatDiv.setAttribute('unique', identifier);
+    const modalContent = document.querySelector('.modal-content');
+    const cls = 'template-img';
+    const imgTag = `<img class="${cls}" src="${image.tempImg}" alt="template image">`;
+    templatDiv.innerHTML = imgTag;
+    modalContent.append(templatDiv);
+})
+
+// standardShowtemplate.addEventListener('click', showTemplate('premim'));
+//This closes the modal
+const close = document.querySelectorAll('.close');
+close.forEach((c)=>{
+    c.addEventListener('click', function closeModal(){
+    backdrop.classList.remove('modal-display');
+    aboutContainer.classList.remove('more-margin');
+});
+})
+
+
+
+//This will preview the template imaages.
+ const eachTempImg = document.querySelectorAll('.template-div');
+    eachTempImg.forEach((i)=>{
+        i.addEventListener('click', function review(){
+            const identifier = i.getAttribute('unique');
+            console.log(templateImages[identifier]);
+            idIndex = i[identifier];
+            if(idIndex == i[identifier]){
+                //preview the template image
+            }
+        })
+    })
