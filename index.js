@@ -6,6 +6,8 @@ const toggle = document.querySelector('.web-toggle');
 const webFeatureParentdiv = document.querySelector('.web-features');
 const webFaq = document.querySelector('.web-faqs');
 const backdrop = document.querySelector('.web-modalcontainer');
+const aboutContainer = document.querySelector('.web-about');
+const modalBody = document.querySelector('.modal-bdy');
 let displayAnswer = false;
 
 let display = false;
@@ -73,54 +75,44 @@ subscription.forEach((plan) => {
         // This line checks if the click event is premium
         //if premium it checks again if the premium has the class .standard, which by defualt it has
         //if the click is standard then it remove the standard class from premium and add it to his, and vice-versa.
-    if(plan.textContent === 'Premium'){
-        let premium = document.querySelector('.web-subscription');
-        let standard = document.querySelector('.web-subscription.standard');
-        if (standard){
-            standard.classList.remove('standard');
-            premium.classList.add('standard');
-            updateSubscription('premium');
+    if(plan.textContent === 'Standard'){
+        let standard = document.querySelector('.web-subscription');
+        let premium = document.querySelector('.web-subscription.standard');
+        if (premium){
+            premium.classList.remove('standard');
+            standard.classList.add('standard');
+            backdrop.classList.remove('modal-display')
+            aboutContainer.classList.remove('more-margin')
+            updateSubscription('standard');
         }
     }else{
-        if(plan.textContent === 'Standard'){
+        if(plan.textContent === 'Premium'){
             plan.classList.add('standard');
-            let premium = document.querySelector('.web-subscription.standard');
-            if (premium){
-                premium.classList.remove('standard');
+            let standard = document.querySelector('.web-subscription.standard');
+            if (standard){
+                standard.classList.remove('standard');
                 plan.classList.add('standard');
+                backdrop.classList.remove('modal-display');
+                aboutContainer.classList.remove('more-margin');
             }
-            updateSubscription('standard');
+            updateSubscription('premium');
         }
     }   
 })  
 })
-// toggle.addEventListener('click', function showHide(){
-//     display =! display;
-//     if(display){
-//         toggle.textContent = 'close';
-//         div.style.visibility = 'visibe';
-//         subscription.forEach((plan)=>{
-//             if(plan.textContent == 'Standard'){
-//                 console.log('standard is called');
-//                 updateSubscription('standard');
-//             }else{
-//                 console.log(true)
-//                 updateSubscription('premium');
-//             }
-//         } )
-//     }else{
-//         toggle.textContent = 'open';
-//         subscription.forEach(plan=>{
-//             if(plan.textContent == 'Premium' ){
-//                 div.textContent = null;
-//             }
-//         })
-        
-//     }
-// })
+
 
 //function here checkes as click event is active for standard/premium and it update the content
 //with respect to the value (if standard/premium).
+
+function standardModal(){
+    backdrop.classList.add('modal-display');
+    aboutContainer.classList.add('more-margin');  
+}
+function premiumModal(){
+    backdrop.classList.add('modal-display');
+    aboutContainer.classList.add('more-margin');  
+}
 div.classList.add('features');
 const subscriptionbtn = 'sub-btn';
 const webFeatureslist = 
@@ -131,13 +123,18 @@ const webFeatureslist =
         <button class='${subscriptionbtn}'>Show Templates</button>
         `
         div.innerHTML = webFeatureslist;
-        webFeatureParentdiv.append(div);
+        webFeatureParentdiv.appendChild(div);
 
 function updateSubscription(subcriptionPacakge){
     let price = document.querySelector('.web-amount');
-    if(subcriptionPacakge == 'premium'){
+    if(subcriptionPacakge == 'standard'){
         price.textContent = '#30,000';
         div.classList.add('features');
+        const featuresIncluded = document.createElement('div');
+        featuresIncluded.classList.add('feature-include');
+        const h6 = document.createElement('h6');
+        h6.textContent = "Features included:";
+        featuresIncluded.appendChild(h6);
         const webFeatureslist = 
         `<ol>
         <li>Ability to change bought website template for free first time</li>
@@ -146,11 +143,22 @@ function updateSubscription(subcriptionPacakge){
         <button class='${subscriptionbtn}'>Show Templates</button>
         `
         div.innerHTML = webFeatureslist;
-        webFeatureParentdiv.append(div);
+        webFeatureParentdiv.innerHTML = '';
+        webFeatureParentdiv.appendChild(featuresIncluded);
+        webFeatureParentdiv.appendChild(div);
+
+        const premimShowtemplate = document.querySelector('.sub-btn');
+        premimShowtemplate.addEventListener("click", premiumModal );
+
     }else{
         price.textContent = '#50,000';
         div.classList.add('features');
-        const standardbtn = 'std-btn'
+        const standardbtn = 'std-btn';
+        const featuresIncluded = document.createElement('div');
+        featuresIncluded.classList.add('feature-include');
+        const h6 = document.createElement('h6');
+        h6.textContent = "Features included:";
+        featuresIncluded.appendChild(h6);
         const webFeatureslist = 
         `<ol>
         <li>Ability to make changes to website design and also make unlimited changes offers by our developer</li>
@@ -161,19 +169,18 @@ function updateSubscription(subcriptionPacakge){
         <button class='${standardbtn}'>Show Templates</button>
         `
         div.innerHTML = webFeatureslist;
-        webFeatureParentdiv.append(div);
+        webFeatureParentdiv.innerHTML = '';
+        webFeatureParentdiv.appendChild(featuresIncluded);
+        webFeatureParentdiv.appendChild(div);
+        const premiumShowtemplate = document.querySelector('.std-btn');
+        premiumShowtemplate.addEventListener("click", premiumModal );
         
         }  
 }
 
 //This button is check to display modal, check if standard/premium 
-const aboutContainer = document.querySelector('.web-about');
-const premimShowtemplate = document.querySelector('.sub-btn');
-const standardShowtemplate = document.querySelector('.std-btn');
-premimShowtemplate.addEventListener("click", function premium(){
-    backdrop.classList.add('modal-display');
-    aboutContainer.classList.add('more-margin');
-});
+const standardShowtemplate = document.querySelector('.sub-btn');
+standardShowtemplate.addEventListener("click", standardModal );
 
 
 
@@ -241,11 +248,13 @@ const templateImages = [
     {id: 10, tempImg: "https://colorlib.com/wp/wp-content/uploads/sites/2/tri-o-beautiful-website-template.jpg.avif"},
 ]
 
+const modalContent = document.querySelector('.modal-content');
+
 templateImages.forEach((image, identifier)=>{
     let templatDiv = document.createElement('div');
     templatDiv.classList.add('template-div')
     templatDiv.setAttribute('unique', identifier);
-    const modalContent = document.querySelector('.modal-content');
+    
     const cls = 'template-img';
     const imgTag = `<img class="${cls}" src="${image.tempImg}" alt="template image">`;
     templatDiv.innerHTML = imgTag;
@@ -269,10 +278,37 @@ close.forEach((c)=>{
     eachTempImg.forEach((i)=>{
         i.addEventListener('click', function review(){
             const identifier = i.getAttribute('unique');
-            console.log(templateImages[identifier]);
             idIndex = i[identifier];
             if(idIndex == i[identifier]){
-                //preview the template image
+                const template = document.querySelectorAll('.template-div');
+                template.forEach((t)=>{
+                    t.classList.add('invisible');
+                })
+                const image =  i.querySelector('.template-img');
+                //on preview take me to another page for preview main aim 
+                //preview the template image and go back to previous page
+                let imagePreviewDiv = document.createElement('div');
+                imagePreviewDiv.classList.add('image-template');
+                const goBacktext = document.createElement('p');
+                goBacktext.classList.add('go-back');
+                goBacktext.textContent = 'Go back';
+                imagePreviewDiv.appendChild(goBacktext);
+                image.classList.add('expand');
+                imagePreviewDiv.appendChild(image.cloneNode(true));
+                modalContent.appendChild(imagePreviewDiv);
+                const goBack = document.querySelector('.go-back');
+                goBack.addEventListener('click', previousPage);
+                
             }
         })
     })
+
+    function previousPage(){
+        const template = document.querySelectorAll('.template-div');
+        const imageTemplate = document.querySelector('.image-template');
+            template.forEach((t)=>{
+                t.classList.remove('invisible');
+            });
+            imageTemplate.classList.add('invisible');
+            imageTemplate.remove();
+    }
