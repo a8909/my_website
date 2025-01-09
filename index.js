@@ -29,14 +29,14 @@ function handleScroll(){
     const webMore = aboutUs.querySelector('.web-more');
     if(isElementInView(aboutUs)){
         webMore.classList.add('slideIn');
-        webMore.classList.remove('fade-out')
+        webMore.classList.remove('fade-out');
     }else{
         webMore.classList.add('fade-out');
         webMore.classList.remove('slideIn');
     }
 }
 window.addEventListener('scroll', handleScroll);
-document.addEventListener('DOMContentLoaded', handleScroll);
+document.addEventListener('load', handleScroll);
 
 // This populate the about us
 webAbout.forEach((w) => {
@@ -55,6 +55,28 @@ function onAnimate() {
     const webContent = document.querySelector('.web-innercontent');
     webContent.classList.add('slideIn');
 }
+
+const products = [
+    {aboutProduct: "MY WEBSITE combine affordability with reliability and efficiency, ensuring your business excels online.", productImage: "https://img.freepik.com/premium-photo/office-web-designers_53876-55846.jpg?w=740"},
+    {aboutProduct: "Build your online presence with web development solutions that are efficient, dependable, and easy on your budget.", productImage: "https://img.freepik.com/free-photo/high-angle-woman-working-laptop_23-2149908209.jpg?t=st=1736291656~exp=1736295256~hmac=bda07a0514ee3c905946cdd424a5ec9274e8f607024db48f69bc34e178604d4b&w=826"},
+    {aboutProduct: "Turn your mobile vision into reality with our dependable, affordable solutions.", productImage: "https://img.freepik.com/premium-psd/man-pointing-mobile_23-2148600574.jpg?w=826"},
+]
+
+
+products.forEach((product)=>{
+    const productContent = document.querySelector('.products-content');
+    const productDiv = document.createElement('div');
+    productDiv.classList.add('products');
+    const h3 = document.createElement('h3');
+    const image = document.createElement('img');
+    image.classList.add('resized-img');
+    h3.textContent = `${product.aboutProduct}`;
+    image.src = `${product.productImage}`;
+    image.alt = 'productImage';
+    productDiv.appendChild(h3);
+    productDiv.appendChild(image);
+    productContent.appendChild(productDiv);
+})
 //This make the whatsapp link active if clicked.
 webContact.addEventListener('click',function directToWhatsapp(){
     const whatsappUrl = 'https://wa.me/qr/TZVWNZ7JYEP6M1';

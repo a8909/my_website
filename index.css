@@ -50,6 +50,22 @@ a:hover{
     font-size: 23px;
 }
 
+
+.products-content{
+    display: flex;
+    flex-direction: column;
+}
+.products{
+    display: flex;
+    margin: 10px auto 10px auto;
+    align-items: center;
+    max-width: 1000px;
+    gap: 100px;
+    padding: 20px;
+    @media(max-width: 908px){
+        flex-wrap: wrap
+    }
+}
 .web-subscriptions{
     background: #ffffff;
     border: 1px solid lightgrey;
@@ -319,4 +335,10 @@ img{
 }
 .expand{
     width: 100%;
+}
+.resized-img{
+    width: 100%;
+    height: 300px;
+    object-fit: cover;
+    border-radius: 8px;
 }
