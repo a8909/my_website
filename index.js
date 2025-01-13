@@ -14,6 +14,8 @@ let display = false;
 let div = document.createElement('div');
 let idIndex = {};
 
+
+
 //This is used to target the scroll using getBoundingClientReact(),
 //if the react.top <= window.innerHeight means the element top is below the window inner height the effect come alive
 // and when the react.bottom >- 0 the effect leaves and this function needs to be called inside handleScroll
@@ -26,7 +28,9 @@ function isElementInView(elemment){
 }
 function handleScroll(){
     const aboutUs = document.querySelector('#about');
+    const productweb = document.querySelector('#product');
     const webMore = aboutUs.querySelector('.web-more');
+    const productsContent = document.querySelector('.products-content');
     if(isElementInView(aboutUs)){
         webMore.classList.add('slideIn');
         webMore.classList.remove('fade-out');
