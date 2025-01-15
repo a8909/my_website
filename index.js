@@ -143,8 +143,13 @@ div.classList.add('features');
 const subscriptionbtn = 'sub-btn';
 const webFeatureslist = 
         `<ol>
-        <li>Ability to change bought website template for free first time</li>
         <li>Good user experience and feels for all user across all screen</li>
+        <li>Hoisting is not free</li>
+        <li>Domain is not free</li>
+        <li>Future changes after deployement are not free</li>
+        <li>No FAQS features on the website</li>
+        <li>No TESTIOMONY features on the website</li>
+        <li>Only whatsapp communication line will be on the website(optional).</li>
         <li>Once bought you are the sole owner of the website.</li></ol>
         <button class='${subscriptionbtn}'>Show Templates</button>
         `
@@ -154,7 +159,7 @@ const webFeatureslist =
 function updateSubscription(subcriptionPacakge){
     let price = document.querySelector('.web-amount');
     if(subcriptionPacakge == 'standard'){
-        price.textContent = '#30,000';
+        price.textContent = 'N80,000.00';
         div.classList.add('features');
         const featuresIncluded = document.createElement('div');
         featuresIncluded.classList.add('feature-include');
@@ -163,8 +168,13 @@ function updateSubscription(subcriptionPacakge){
         featuresIncluded.appendChild(h6);
         const webFeatureslist = 
         `<ol>
-        <li>Ability to change bought website template for free first time</li>
         <li>Good user experience and feels for all user across all screen</li>
+        <li>Hoisting is not free</li>
+        <li>Domain is not free</li>
+        <li>Future changes after deployement are not free</li>
+        <li>Access to FAQS features on the website(optional).</li>
+        <li>No TESTIOMONY features on the website</li>
+        <li>Only whatsapp communication line will be on the website(optional).</li>
         <li>Once bought you are the sole owner of the website.</li></ol>
         <button class='${subscriptionbtn}'>Show Templates</button>
         `
@@ -177,7 +187,7 @@ function updateSubscription(subcriptionPacakge){
         premimShowtemplate.addEventListener("click", premiumModal );
 
     }else{
-        price.textContent = '#50,000';
+        price.textContent = 'N100,000.00';
         div.classList.add('features');
         const standardbtn = 'std-btn';
         const featuresIncluded = document.createElement('div');
@@ -187,11 +197,13 @@ function updateSubscription(subcriptionPacakge){
         featuresIncluded.appendChild(h6);
         const webFeatureslist = 
         `<ol>
-        <li>Ability to make changes to website design and also make unlimited changes offers by our developer</li>
-        <li>No charges for future and advance changes on the website</li>
-        <li>Once bought you are the sole owner of the website.</li>
+        <li>Free domain on first buy.(.com.ng, .ng)</li>
+        <li>Free hoisting on the domain</li>
+        <li>Future changes after deployement are paid</li>
         <li>Access to FAQS features on the wesite</li>
-        <li>Easy access to connect your communication line e.g (WhatsApp, Email and any other service platform)</li></ol>
+        <li>Good user experience and feels for all user across all screen</li>
+        <li>Access to TESITOMY features on the wesite</li>
+        <li>Easy access to connect your communication line e.g (WhatsApp, Email and any other platform services)</li></ol>
         <button class='${standardbtn}'>Show Templates</button>
         `
         div.innerHTML = webFeatureslist;

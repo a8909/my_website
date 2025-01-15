@@ -36,6 +36,9 @@ a:hover{
     padding: 20px;
 }
 
+.web-amount{
+    font-size: 40px;
+}
 .more-margin{
     margin-top: 211px;
 }
@@ -79,9 +82,10 @@ a:hover{
     display: flex;
     flex-direction: column;
     align-items: center;
-    border-radius: 6px;
+    border-radius: 12px;
     border: 0.5px solid lightgrey;
-    max-width: 250px;
+    background: rgb(247, 247, 247);
+    max-width: 400px;
     margin: auto auto 10px auto;
     padding: 20px;
 }
@@ -274,6 +278,10 @@ h5{text-align: center; font-weight: 800;font-size: 40px;}
     margin-right: 5px;
 }
 
+.web-contact>img{
+    border-radius: 50%;
+}
+
 .shift{
     transform: translateY(-20px);
     transition: transform 0.3s ease;
@@ -321,7 +329,6 @@ h3{
 img{
     height: 50px;
     width: 50px;
-    border-radius: 50%;
 }
 
 .close{
@@ -352,4 +359,8 @@ img{
     height: 300px;
     object-fit: cover;
     border-radius: 8px;
+}
+
+ol{
+    list-style: disc;
 }
