@@ -69,6 +69,29 @@ a:hover{
         flex-wrap: wrap
     }
 }
+
+@keyframes inward{
+    from{
+    transform: translateX(100%);
+    opacity: 0;
+    };
+    to{
+        transform: translateX(0%);
+        opacity: 1;
+    }
+}
+
+.products>h3{
+    animation: inward 1s ease-out;
+}
+
+
+
+/* .inward{
+    transform: translateX(0%);
+    opacity: 1;
+    transition: transform 1s ease-out, opacity 1s ease-out;
+} */
 .web-subscriptions{
     background: #ffffff;
     border: 1px solid lightgrey;

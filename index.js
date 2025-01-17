@@ -1,6 +1,9 @@
 const about = document.querySelector('.web-aboutcontent');
 const webContact = document.querySelector('.web-contact');
-const webAbout = [{id: 1, content : 'Get your ready made WEBSITE with a little cost.'}, {id: 2, content : 'Get us build a scalable, functional and efficient WEB APPLICATION for your brand at a go.'}, {id: 3, content : 'With MY WEBSITE you can get your MOBILE APPLICATION built and live on playstore for commercial use.'}];
+const webAbout = [
+    {id: 1, content : 'Affordable, Professional, and Ready to Go. Why pay more when you can get a fully functional, beautifully designed website at a fraction of the cost? At MY WEBSITE, we offer ready-made websites that are cost-effective, yet packed with all the features you need to succeed online.'},
+    {id: 2, content : "At MY WEBSITE, we specialize in creating scalable and highly functional web applications tailored to your brand's needs. With our expertise, you’ll get a solution that’s not only efficient but also designed to grow with your business."},
+    {id: 3, content : 'With MY WEBSITE, we make it easy to build your MOBILE APPLICATION and get it live on the Play Store. Whether you’re looking to reach customers, expand your brand, or offer services on the go, we’ll bring your app vision to life – ready for commercial use.'}];
 const subscription = document.querySelectorAll('.web-subscription');
 const toggle = document.querySelector('.web-toggle');
 const webFeatureParentdiv = document.querySelector('.web-features');
@@ -133,7 +136,7 @@ subscription.forEach((plan) => {
 
 function standardModal(){
     backdrop.classList.add('modal-display');
-    aboutContainer.classList.add('more-margin');  
+    aboutContainer.classList.add('more-margin');
 }
 function premiumModal(){
     backdrop.classList.add('modal-display');
@@ -286,7 +289,7 @@ const templateImages = [
     {id: 10, tempImg: "https://colorlib.com/wp/wp-content/uploads/sites/2/tri-o-beautiful-website-template.jpg.avif"},
 ]
 
-const modalContent = document.querySelector('.modal-content');
+let modalContent = document.querySelector('.modal-content');
 
 templateImages.forEach((image, identifier)=>{
     let templatDiv = document.createElement('div');
