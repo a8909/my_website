@@ -150,6 +150,7 @@ const webFeatureslist =
         <li>Hoisting is not free</li>
         <li>Domain is not free</li>
         <li>Future changes after deployement are not free</li>
+        <li>Gallery feature(3 image display for showoff)</li>
         <li>No FAQS features on the website</li>
         <li>No TESTIOMONY features on the website</li>
         <li>Only whatsapp communication line will be on the website(optional).</li>
@@ -175,6 +176,7 @@ function updateSubscription(subcriptionPacakge){
         <li>Hoisting is not free</li>
         <li>Domain is not free</li>
         <li>Future changes after deployement are not free</li>
+        <li>Gallery feature(3 image display for showoff)</li>
         <li>Access to FAQS features on the website(optional).</li>
         <li>No TESTIOMONY features on the website</li>
         <li>Only whatsapp communication line will be on the website(optional).</li>
@@ -203,6 +205,7 @@ function updateSubscription(subcriptionPacakge){
         <li>Free domain on first buy.(.com.ng, .ng)</li>
         <li>Free hoisting on the domain</li>
         <li>Future changes after deployement are paid</li>
+        <li>Gallery feature(unlimited)</li>
         <li>Access to FAQS features on the wesite</li>
         <li>Good user experience and feels for all user across all screen</li>
         <li>Access to TESITOMY features on the wesite</li>
