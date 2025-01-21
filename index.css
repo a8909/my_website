@@ -31,6 +31,23 @@ a:hover{
     font-weight: 800;
 }
 
+.upload-bdy{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+}
+
+.img-input{
+    visibility: hidden;
+}
+
+.img-div{
+    border: 1px solid grey;
+    border-radius: 5px;
+    border-style: dashed;
+    margin-bottom: 10px;
+}
 .web-about{
     background: lightsalmon;
     padding: 20px;

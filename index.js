@@ -13,10 +13,85 @@ const aboutContainer = document.querySelector('.web-about');
 const modalBody = document.querySelector('.modal-bdy');
 let displayAnswer = false;
 
-let display = false;
 let div = document.createElement('div');
 let idIndex = {};
+let uploadData = true;
+let uploadDisplay = true;
 
+
+
+function uploadModal() {
+   if(uploadDisplay){
+     const modalContainer = document.createElement('div');
+     const uploadContainer = document.querySelector('.upload-container');
+     uploadContainer.classList.add('modal-bdy');
+    //bootstrap upload data
+    const modalbdy = document.createElement('div');
+    modalbdy.classList.add('upload-bdy');
+    const form = document.createElement('form');
+    const imageDiv = document.createElement('div');
+    imageDiv.classList.add('img-div');
+    const imageInput = document.createElement('input');
+    const imageUploadtext = document.createElement('p');
+    imageUploadtext.style.textAlign = 'center';
+    const uploadButton = document.createElement('button');
+    imageInput.classList.add('img-input');
+    imageInput.type = 'file'
+    imageInput.accept = 'image/png';
+    function onImageinput(e){
+        console.log(e);
+        e.preventDefault;
+        const imageFile = e.target.files[0];
+        if(imageFile.length > 0){
+            uploadDisplay = false;
+            const image = document.createElement('img');
+            const imageUrl = URL.createObjectURL(imageFile);
+            //set the url
+            image.src = imageUrl;
+            modalbdy.appendChild(image);
+        }
+    }
+    imageInput.addEventListener('change', onImageinput );
+    imageUploadtext.textContent = 'Upload image';
+    imageUploadtext.style.cursor = 'pointer';
+    imageUploadtext.style.color = 'darkslategrey';
+    imageUploadtext.style.fontWeight = 'bold';
+    imageUploadtext.addEventListener('click', function (){
+        imageInput.click()
+    })
+    function submit(){
+        if(imageInput.value == ''){
+            return;
+       }else{
+        //this value should be that same as the backend
+        const value = imageInput.value;
+        //call the api to post the data
+       }
+    }
+    uploadButton.textContent = 'Upload';
+    uploadButton.click(
+       submit()
+    )
+    
+    form.appendChild(imageDiv);
+    form.appendChild(uploadButton);
+    modalbdy.appendChild(form);
+    imageDiv.innerHTML = '';
+    imageDiv.appendChild(imageInput);
+    imageDiv.appendChild(imageUploadtext);
+    modalContainer.appendChild(modalbdy);
+    uploadContainer.innerHTML = '';
+    uploadContainer.appendChild(modalContainer);
+   }
+}
+function showUpload(value){
+    uploadData = value;
+    const uploadLi =  document.querySelector('.upload');
+    uploadData ? uploadLi.textContent = 'Upload template' : uploadData.textContent = null;
+    uploadLi.addEventListener('click', uploadModal);
+}
+//By default this should be false. Reason being that the access to the funtion should be enabled if admin want to upload new template
+window.addEventListener('DOMContentLoaded', showUpload(true));
 
 
 //This is used to target the scroll using getBoundingClientReact(),
