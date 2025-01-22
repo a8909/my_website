@@ -11,44 +11,73 @@ const webFaq = document.querySelector('.web-faqs');
 const backdrop = document.querySelector('.web-modalcontainer');
 const aboutContainer = document.querySelector('.web-about');
 const modalBody = document.querySelector('.modal-bdy');
+const menuBar = document.querySelector('.menu-bar');
 let displayAnswer = false;
+let menu = false;
 
 let div = document.createElement('div');
 let idIndex = {};
 let uploadData = true;
-let uploadDisplay = true;
 
 
+
+menuBar.addEventListener('click', function toggleMenu(){
+    menu =! menu;
+    const productList = document.querySelector('.product-list');
+    const firstChild = document.querySelector('.first-child');
+    const secondChild = document.querySelector('.second-child');
+    const lastChild = document.querySelector('.last-child');
+    if(menu){
+        productList.classList.add('product-view');
+        firstChild.classList.add('view');
+        secondChild.classList.add('view-one');
+        lastChild.classList.add('view-two');
+    }else{
+       productList.classList.remove('product-view');
+        firstChild.classList.remove('view');
+        secondChild.classList.remove('view-one');
+        lastChild.classList.remove('view-two');
+    }
+})
 
 function uploadModal() {
-   if(uploadDisplay){
-     const modalContainer = document.createElement('div');
+    //  const modalContainer = document.createElement('div');
      const uploadContainer = document.querySelector('.upload-container');
-     uploadContainer.classList.add('modal-bdy');
+     uploadContainer.classList.add('modal-bdi');
+     uploadContainer.classList.add('drag-down');
     //bootstrap upload data
     const modalbdy = document.createElement('div');
+    const closeModal = document.createElement('div');
     modalbdy.classList.add('upload-bdy');
+    const span = document.createElement('span');
+    closeModal.classList.add('dismiss-modal');
+    span.textContent = 'Close';
+    span.classList.add('close');
+    span.addEventListener('click', function closeUpload(){
+        uploadContainer.classList.remove('modal-bdy');
+        uploadContainer.classList.remove('drag-down');
+        uploadContainer.innerHTML = '';
+    })
     const form = document.createElement('form');
     const imageDiv = document.createElement('div');
     imageDiv.classList.add('img-div');
     const imageInput = document.createElement('input');
+    const image = document.createElement('img');
+    image.classList.add('upload-img');
     const imageUploadtext = document.createElement('p');
-    imageUploadtext.style.textAlign = 'center';
     const uploadButton = document.createElement('button');
     imageInput.classList.add('img-input');
     imageInput.type = 'file'
     imageInput.accept = 'image/png';
     function onImageinput(e){
-        console.log(e);
         e.preventDefault;
         const imageFile = e.target.files[0];
-        if(imageFile.length > 0){
-            uploadDisplay = false;
-            const image = document.createElement('img');
+        if(imageFile){
             const imageUrl = URL.createObjectURL(imageFile);
             //set the url
             image.src = imageUrl;
-            modalbdy.appendChild(image);
+            image.style.display = 'block';
+            
         }
     }
     imageInput.addEventListener('change', onImageinput );
@@ -60,29 +89,37 @@ function uploadModal() {
         imageInput.click()
     })
     function submit(){
+        
+    }
+    uploadButton.type = 'submit';
+    uploadButton.textContent = 'Upload';
+    uploadButton.addEventListener('click', function(e){
+        e.preventDefault();
         if(imageInput.value == ''){
+            console.log(`imageInput.value is ${imageInput.value}`)
             return;
        }else{
         //this value should be that same as the backend
         const value = imageInput.value;
         //call the api to post the data
+        //clean up
+        uploadContainer.classList.remove('modal-bdy');
+        uploadContainer.innerHTML = '';
        }
-    }
-    uploadButton.textContent = 'Upload';
-    uploadButton.click(
-       submit()
-    )
+    })
     
     form.appendChild(imageDiv);
     form.appendChild(uploadButton);
+    closeModal.appendChild(span);
+    modalbdy.appendChild(closeModal);
     modalbdy.appendChild(form);
     imageDiv.innerHTML = '';
     imageDiv.appendChild(imageInput);
+    imageDiv.appendChild(image);
     imageDiv.appendChild(imageUploadtext);
-    modalContainer.appendChild(modalbdy);
     uploadContainer.innerHTML = '';
-    uploadContainer.appendChild(modalContainer);
-   }
+    uploadContainer.appendChild(modalbdy);
+   
 }
 function showUpload(value){
     uploadData = value;
@@ -90,6 +127,8 @@ function showUpload(value){
     uploadData ? uploadLi.textContent = 'Upload template' : uploadData.textContent = null;
     uploadLi.addEventListener('click', uploadModal);
 }
+
+function closeUpload(){}
 //By default this should be false. Reason being that the access to the funtion should be enabled if admin want to upload new template
 window.addEventListener('DOMContentLoaded', showUpload(true));
 
@@ -409,11 +448,41 @@ close.forEach((c)=>{
                 let imagePreviewDiv = document.createElement('div');
                 imagePreviewDiv.classList.add('image-template');
                 const goBacktext = document.createElement('p');
+                const buyNow = document.createElement('button');
+                buyNow.textContent = 'Buy Now';
+                buyNow.addEventListener('click', function buy(e){
+                    e.preventDefault();
+                    const buyModal = document.createElement('div');
+                    buyModal.classList.add('buy-now')
+                    const buyModalbody = document.createElement('div');
+                    const modalCancel = document.createElement('div');
+                    const contentDiv = document.createElement('div');
+                    const accNo = document.createElement('h3');
+                    const accName = document.createElement('h3');
+                    const bank = document.createElement('h3');
+                    accNo.textContent = '2263997831';
+                    accName.textContent = 'shobola boluwatife joshua'.toUpperCase();
+                    bank.textContent = 'zenith bank'.toUpperCase();
+                    contentDiv.appendChild(accNo);
+                    contentDiv.appendChild(accName);
+                    contentDiv.appendChild(bank);
+
+                    // Create the <i> icon element (for the close icon)
+                    const closeIcon = document.createElement('i');
+                    closeIcon.classList.add('bi', 'bi-x');
+                    modalCancel.appendChild(closeIcon);
+                    buyModalbody.appendChild(modalCancel);
+                    buyModalbody.appendChild(contentDiv)
+                    buyModal.innerHTML = '';
+                    buyModal.appendChild(buyModalbody);
+                    imagePreviewDiv.appendChild(buyModal)
+                })
                 goBacktext.classList.add('go-back');
                 goBacktext.textContent = 'Go back';
                 imagePreviewDiv.appendChild(goBacktext);
                 image.classList.add('expand');
                 imagePreviewDiv.appendChild(image.cloneNode(true));
+                imagePreviewDiv.appendChild(buyNow);
                 modalContent.appendChild(imagePreviewDiv);
                 const goBack = document.querySelector('.go-back');
                 goBack.addEventListener('click', previousPage);

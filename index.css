@@ -4,7 +4,7 @@ body{
 html{
     scroll-behavior: smooth;
 }
-.questions,.web-standard,.web-subscription,.web-toggle,button,.web-aboutitem,a,.go-back{cursor: pointer;}
+.questions,.web-standard,.web-subscription,.web-toggle,button,.web-aboutitem,a,.go-back, .menu-bar{cursor: pointer;}
 nav{
     max-width: 500px;
 }
@@ -14,6 +14,7 @@ nav{
     position: sticky;
     top: 0;
     z-index: 1000;
+    box-shadow: 0 4px 8px 0 rgba(116, 115, 115, 0.1), 0 6px 20px 0 rgba(124, 123, 123, 0.19);
 }
 
 a{
@@ -31,6 +32,99 @@ a:hover{
     font-weight: 800;
 }
 
+.menu-bar{
+    margin-right: 30px;
+    display: none !important;
+    @media(max-width: 493px){
+        display: block !important;
+    }
+}
+
+
+.first-child{
+    border: 1px solid black !important;
+    width: 30px;
+    position: fixed;
+    top: 28;
+    right: 14;
+}
+
+.view{
+    transform: rotate(45deg) !important;
+    right: 21 !important;
+    top: 40;
+    transition: transform 0.3s ease-in-out;
+}
+
+.second-child{
+    border: 1px solid black !important;
+    width: 25px;
+    position: fixed;
+    top: 34;
+    right: 15;
+}
+
+.view-one{
+    transform: scale(0) !important;
+    transition: transform 0.3s ease-in-out;
+}
+
+.last-child{
+    border: 1px solid black !important;
+    width: 20px;
+    position: fixed;
+    top: 40;
+    right: 15;
+}
+
+.view-two{
+    transform: rotate(-45deg) !important;
+    width: 30px !important;
+    right: 22 !important;
+    transition: transform 0.3s ease-in-out;
+}
+
+.product-list{
+    display: flex;
+    list-style: none;
+    margin-bottom: 0px;
+    gap: 20px;
+    @media(max-width: 493px){
+        display: none !important;
+        flex-direction: column;
+        align-items: flex-end;
+        position: absolute;
+        top: 100%;
+        width: 100%;
+        padding-right: 20px;
+        padding-bottom: 20px;
+        right: 0;
+        background: rgb(248, 248, 248);
+        box-shadow: 0 4px 8px 0 rgba(116, 115, 115, 0.1), 0 6px 20px 0 rgba(124, 123, 123, 0.19);
+    }
+}
+
+.product-view{
+   display: flex !important;
+}
+
+.drag-down{
+    transform: translateY(10%);
+    transition: transform 3s ease-in-out;
+}
+
+
+form{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    width: 100%;
+    padding: 20px;
+}
+
+#web-content > div{
+    margin-top: 10px !important;
+}
 .upload-bdy{
     display: flex;
     align-items: center;
@@ -38,8 +132,24 @@ a:hover{
     flex-direction: column;
 }
 
-.img-input{
-    visibility: hidden;
+.dismiss-modal{
+    display: flex;
+    justify-content: flex-end;
+    width: 100%;
+    padding: 5px 20px 5px 0px;
+}
+
+.dismiss-modal > span{
+    visibility: visible !important;
+}
+
+.upload-img{
+    width: 200px;
+    height: 200px;
+}
+
+.img-input, .upload-img{
+    display: none;
 }
 
 .img-div{
@@ -47,6 +157,23 @@ a:hover{
     border-radius: 5px;
     border-style: dashed;
     margin-bottom: 10px;
+    padding: 10px;
+    width: 954px;
+    height: 300px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    @media(max-width: 1042px){
+        width: 600px;
+    } 
+    @media(max-width: 636px){
+        width: 530px;
+    }
+    @media(max-width: 540px){
+        width: 259px;
+    }
+   
 }
 .web-about{
     background: lightsalmon;
@@ -102,13 +229,6 @@ a:hover{
     animation: inward 1s ease-out;
 }
 
-
-
-/* .inward{
-    transform: translateX(0%);
-    opacity: 1;
-    transition: transform 1s ease-out, opacity 1s ease-out;
-} */
 .web-subscriptions{
     background: #ffffff;
     border: 1px solid lightgrey;
@@ -184,6 +304,25 @@ button{
     display: block;
 }
 
+.modal-bdi{
+    background: #ffffff;
+    z-index: 1500;
+    position: fixed;
+    right: 0;
+    left: 0;
+    top: 36;
+    margin: 0px auto 0px auto;
+    max-width: 1000px;
+    border-radius: 3px;
+    box-shadow: 0 4px 8px 0 rgba(116, 115, 115, 0.1), 0 6px 20px 0 rgba(124, 123, 123, 0.19) ;
+    @media(max-width: 1043px){
+        max-width: 650px;
+    }
+    @media(max-width: 541px){
+        max-width: 300px;
+    }
+}
+
 .modal-bdy{
     background: #ffffff;
     z-index: 1500;
@@ -216,7 +355,7 @@ button{
 }
 
 .p{
-    line-height: 16px;
+    line-height: 20px;
     font-size: 20px;
 }
 .web-faqs{
@@ -303,6 +442,18 @@ h5{text-align: center; font-weight: 800;font-size: 40px;}
     transform: translateY(100%);
     transition: transform 1s ease-out, opacity 1s ease-out ;
 }
+
+.buy-now{
+    background: #ffffff;
+        border-radius: 3px;
+        position: absolute;
+        top: 65%;
+        right: 158px;
+        left: 78px;
+        z-index: 150;
+        max-width: 1000px;
+        padding: 30px;
+        box-shadow: 0 4px 8px 0 rgba(116, 115, 115, 0.1), 0 6px 20px 0 rgba(124, 123, 123, 0.19);}
 
 .slideIn{
     transform: translateX(0);
