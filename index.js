@@ -16,7 +16,7 @@ let displayAnswer = false;
 let menu = false;
 
 let div = document.createElement('div');
-let idIndex = {};
+let idIndex = 0;
 let uploadData = true;
 
 
@@ -87,13 +87,10 @@ function uploadModal() {
     imageUploadtext.style.fontWeight = 'bold';
     imageUploadtext.addEventListener('click', function (){
         imageInput.click()
-    })
-    function submit(){
-        
-    }
+    });
     uploadButton.type = 'submit';
     uploadButton.textContent = 'Upload';
-    uploadButton.addEventListener('click', function(e){
+    uploadButton.addEventListener('submit', function(e){
         e.preventDefault();
         if(imageInput.value == ''){
             console.log(`imageInput.value is ${imageInput.value}`)
@@ -429,6 +426,14 @@ close.forEach((c)=>{
 });
 })
 
+function setTemplate(templateId){
+    idIndex = templateId;
+}
+
+function getTemplate(){
+    return idIndex;
+}
+
 
 
 //This will preview the template imaages.
@@ -436,8 +441,8 @@ close.forEach((c)=>{
     eachTempImg.forEach((i)=>{
         i.addEventListener('click', function review(){
             const identifier = i.getAttribute('unique');
-            idIndex = i[identifier];
-            if(idIndex == i[identifier]){
+            setTemplate(identifier)
+            if(getTemplate() == identifier){
                 const template = document.querySelectorAll('.template-div');
                 template.forEach((t)=>{
                     t.classList.add('invisible');
@@ -448,28 +453,64 @@ close.forEach((c)=>{
                 let imagePreviewDiv = document.createElement('div');
                 imagePreviewDiv.classList.add('image-template');
                 const goBacktext = document.createElement('p');
+                const buyDiv = document.createElement('div');
                 const buyNow = document.createElement('button');
+                buyDiv.classList.add('center-div');
                 buyNow.textContent = 'Buy Now';
                 buyNow.addEventListener('click', function buy(e){
                     e.preventDefault();
                     const buyModal = document.createElement('div');
-                    buyModal.classList.add('buy-now')
+                    buyModal.classList.add('buy-now','drag-up')
                     const buyModalbody = document.createElement('div');
                     const modalCancel = document.createElement('div');
                     const contentDiv = document.createElement('div');
                     const accNo = document.createElement('h3');
                     const accName = document.createElement('h3');
                     const bank = document.createElement('h3');
+                    const payDiv = document.createElement('div');
+                    payDiv.classList.add('center-div');
+                    const paymentMade = document.createElement('button');
+                    paymentMade.textContent = 'Payment made';
                     accNo.textContent = '2263997831';
                     accName.textContent = 'shobola boluwatife joshua'.toUpperCase();
                     bank.textContent = 'zenith bank'.toUpperCase();
+                    paymentMade.addEventListener('click', function onPaymentmade(){
+                        contentDiv.innerHTML = '';
+                        const emailForm = document.createElement('form');
+                        const inputDiv = document.createElement('div');
+                        inputDiv.classList.add('input-div');
+                        const formInput = document.createElement('input');
+                        const checkOut = document.createElement('button');
+                        checkOut.textContent = 'check out';
+                        formInput.type = 'email';
+                        checkOut.addEventListener('submit', function(e){
+                            e.preventDefault();
+                            if(formInput.value.toLowerCase() == ''){
+                                return;
+                            }else{
+                                const imageId = getTemplate();
+                                templateImages[imageId].tempImg;
+                                //call an endpoint that send this post request to backend;
+                            }
+                        })
+                        inputDiv.appendChild(formInput);
+                        inputDiv.appendChild(checkOut);
+                        emailForm.appendChild(inputDiv);
+                        buyModalbody.appendChild(emailForm);
+                    });
                     contentDiv.appendChild(accNo);
                     contentDiv.appendChild(accName);
                     contentDiv.appendChild(bank);
+                    payDiv.appendChild(paymentMade);
+                    contentDiv.appendChild(payDiv);
 
                     // Create the <i> icon element (for the close icon)
+                    modalCancel.classList.add('dismiss-modal');
                     const closeIcon = document.createElement('i');
                     closeIcon.classList.add('bi', 'bi-x');
+                    closeIcon.addEventListener('click', function close(){
+                        imagePreviewDiv.removeChild(buyModal);
+                    })
                     modalCancel.appendChild(closeIcon);
                     buyModalbody.appendChild(modalCancel);
                     buyModalbody.appendChild(contentDiv)
@@ -482,7 +523,8 @@ close.forEach((c)=>{
                 imagePreviewDiv.appendChild(goBacktext);
                 image.classList.add('expand');
                 imagePreviewDiv.appendChild(image.cloneNode(true));
-                imagePreviewDiv.appendChild(buyNow);
+                buyDiv.appendChild(buyNow);
+                imagePreviewDiv.appendChild(buyDiv);
                 modalContent.appendChild(imagePreviewDiv);
                 const goBack = document.querySelector('.go-back');
                 goBack.addEventListener('click', previousPage);

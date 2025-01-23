@@ -112,6 +112,10 @@ a:hover{
     transform: translateY(10%);
     transition: transform 3s ease-in-out;
 }
+.drag-up{
+    transform: translateY(-10%);
+    transition: transform 3s ease-in-out;
+}
 
 
 form{
@@ -150,6 +154,21 @@ form{
 
 .img-input, .upload-img{
     display: none;
+}
+
+.center-div{
+    display: flex;
+    justify-content: center;
+}
+
+.disabled{
+    opacity: 0.5;
+}
+
+.input-div{
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
 }
 
 .img-div{
