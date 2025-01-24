@@ -47,6 +47,35 @@ function uploadModal() {
      uploadContainer.classList.add('drag-down');
     //bootstrap upload data
     const modalbdy = document.createElement('div');
+    const passcodeDiv = document.createElement('div');
+    const getPasscodebtn = document.createElement('button');
+    getPasscodebtn.textContent = 'Request aceess';
+    getPasscodebtn.classList.add('center-div');
+    passcodeDiv.appendChild(getPasscodebtn);
+    passcodeDiv.style.padding = '20px';
+    getPasscodebtn.addEventListener('click', function getPasscode(e){
+        e.preventDefault();
+        // this send a get request for an access to upload template
+        modalbdy.removeChild(passcodeDiv);
+        const accessForm = document.createElement('form');
+        const passcodeInput = document.createElement('input');
+        passcodeInput.classList.add('email-input');
+        passcodeDiv.placeholder = 'Enter key pphr'
+        accessForm.classList.add('input-div');
+        const authenticateBtn = document.createElement('button');
+        passcodeInput.type = 'number';
+        authenticateBtn.textContent = 'Authenticate';
+        accessForm.appendChild(passcodeInput);
+        accessForm.appendChild(authenticateBtn);
+        modalbdy.appendChild(accessForm);
+        authenticateBtn.addEventListener('click', function(e){
+            e.preventDefault();
+            modalbdy.removeChild(accessForm);
+        })
+    })
+    
+    
+    
     const closeModal = document.createElement('div');
     modalbdy.classList.add('upload-bdy');
     const span = document.createElement('span');
@@ -93,7 +122,6 @@ function uploadModal() {
     uploadButton.addEventListener('submit', function(e){
         e.preventDefault();
         if(imageInput.value == ''){
-            console.log(`imageInput.value is ${imageInput.value}`)
             return;
        }else{
         //this value should be that same as the backend
@@ -109,7 +137,9 @@ function uploadModal() {
     form.appendChild(uploadButton);
     closeModal.appendChild(span);
     modalbdy.appendChild(closeModal);
-    modalbdy.appendChild(form);
+    modalbdy.appendChild(passcodeDiv);
+    
+    // modalbdy.appendChild(form);
     imageDiv.innerHTML = '';
     imageDiv.appendChild(imageInput);
     imageDiv.appendChild(image);
@@ -460,16 +490,22 @@ function getTemplate(){
                 buyNow.addEventListener('click', function buy(e){
                     e.preventDefault();
                     const buyModal = document.createElement('div');
-                    buyModal.classList.add('buy-now','drag-up')
+                    buyModal.classList.add('buy-now');
+                    buyModal.classList.add('drag-up');
                     const buyModalbody = document.createElement('div');
                     const modalCancel = document.createElement('div');
                     const contentDiv = document.createElement('div');
-                    const accNo = document.createElement('h3');
-                    const accName = document.createElement('h3');
-                    const bank = document.createElement('h3');
+                    contentDiv.classList.add('content-div');
+                    const accNo = document.createElement('h6');
+                    accNo.classList.add('acc-details');
+                    const accName = document.createElement('h6');
+                    accName.classList.add('acc-details');
+                    const bank = document.createElement('h6');
+                    bank.classList.add('acc-details');
                     const payDiv = document.createElement('div');
                     payDiv.classList.add('center-div');
                     const paymentMade = document.createElement('button');
+                    paymentMade.classList.add('acc-details');
                     paymentMade.textContent = 'Payment made';
                     accNo.textContent = '2263997831';
                     accName.textContent = 'shobola boluwatife joshua'.toUpperCase();
@@ -480,9 +516,11 @@ function getTemplate(){
                         const inputDiv = document.createElement('div');
                         inputDiv.classList.add('input-div');
                         const formInput = document.createElement('input');
+                        formInput.classList.add('email-input')
                         const checkOut = document.createElement('button');
                         checkOut.textContent = 'check out';
                         formInput.type = 'email';
+                        formInput.placeholder = 'Please provide us a valid email to reach you.'
                         checkOut.addEventListener('submit', function(e){
                             e.preventDefault();
                             if(formInput.value.toLowerCase() == ''){
