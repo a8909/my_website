@@ -14,12 +14,21 @@ const modalBody = document.querySelector('.modal-bdy');
 const menuBar = document.querySelector('.menu-bar');
 let displayAnswer = false;
 let menu = false;
+let isLoading = false;
 
 let div = document.createElement('div');
 let idIndex = 0;
 let uploadData = true;
+let timerState;
 
 
+function setTemplate(templateId){
+    idIndex = templateId;
+}
+
+function getTemplate(){
+    return idIndex;
+}
 
 menuBar.addEventListener('click', function toggleMenu(){
     menu =! menu;
@@ -47,6 +56,7 @@ function uploadModal() {
      uploadContainer.classList.add('drag-down');
     //bootstrap upload data
     const modalbdy = document.createElement('div');
+    const form = document.createElement('form');
     const passcodeDiv = document.createElement('div');
     const getPasscodebtn = document.createElement('button');
     getPasscodebtn.textContent = 'Request aceess';
@@ -55,12 +65,24 @@ function uploadModal() {
     passcodeDiv.style.padding = '20px';
     getPasscodebtn.addEventListener('click', function getPasscode(e){
         e.preventDefault();
+        timerState = setInterval(()=>{
+            if(e.type !== 'mousemove' && (modalbdy.contains(accessForm) || modalbdy.contains(form))){
+                modalbdy.removeChild(accessForm);
+                // modalbdy.removeChild(form);
+                if(timerState){
+                    timerState = null;
+                    modalbdy.appendChild(passcodeDiv);
+                }
+            }
+        },300000);
+    
         // this send a get request for an access to upload template
         modalbdy.removeChild(passcodeDiv);
         const accessForm = document.createElement('form');
         const passcodeInput = document.createElement('input');
         passcodeInput.classList.add('email-input');
-        passcodeDiv.placeholder = 'Enter key pphr'
+        passcodeInput.placeholder = 'Enter key Phrase';
+        passcodeInput.max = '6';
         accessForm.classList.add('input-div');
         const authenticateBtn = document.createElement('button');
         passcodeInput.type = 'number';
@@ -70,7 +92,15 @@ function uploadModal() {
         modalbdy.appendChild(accessForm);
         authenticateBtn.addEventListener('click', function(e){
             e.preventDefault();
+            if(passcodeInput.value.length > 6 || passcodeInput.value == ''){
+                passcodeInput.style.borderColor = 'red';
+                return;
+            }
+            isLoading = true;
+            isLoading ? authenticateBtn.textContent = 'Authenticating' : authenticateBtn.textContent = 'Authenticate';
             modalbdy.removeChild(accessForm);
+            accessForm.reset();
+            appendform(form);
         })
     })
     
@@ -83,11 +113,9 @@ function uploadModal() {
     span.textContent = 'Close';
     span.classList.add('close');
     span.addEventListener('click', function closeUpload(){
-        uploadContainer.classList.remove('modal-bdy');
-        uploadContainer.classList.remove('drag-down');
         uploadContainer.innerHTML = '';
     })
-    const form = document.createElement('form');
+    // const form = document.createElement('form');
     const imageDiv = document.createElement('div');
     imageDiv.classList.add('img-div');
     const imageInput = document.createElement('input');
@@ -106,7 +134,6 @@ function uploadModal() {
             //set the url
             image.src = imageUrl;
             image.style.display = 'block';
-            
         }
     }
     imageInput.addEventListener('change', onImageinput );
@@ -119,7 +146,7 @@ function uploadModal() {
     });
     uploadButton.type = 'submit';
     uploadButton.textContent = 'Upload';
-    uploadButton.addEventListener('submit', function(e){
+    uploadButton.addEventListener('click', function(e){
         e.preventDefault();
         if(imageInput.value == ''){
             return;
@@ -128,7 +155,6 @@ function uploadModal() {
         const value = imageInput.value;
         //call the api to post the data
         //clean up
-        uploadContainer.classList.remove('modal-bdy');
         uploadContainer.innerHTML = '';
        }
     })
@@ -138,7 +164,9 @@ function uploadModal() {
     closeModal.appendChild(span);
     modalbdy.appendChild(closeModal);
     modalbdy.appendChild(passcodeDiv);
-    
+    function appendform(body){
+        modalbdy.appendChild(body);
+    }
     // modalbdy.appendChild(form);
     imageDiv.innerHTML = '';
     imageDiv.appendChild(imageInput);
@@ -146,7 +174,6 @@ function uploadModal() {
     imageDiv.appendChild(imageUploadtext);
     uploadContainer.innerHTML = '';
     uploadContainer.appendChild(modalbdy);
-   
 }
 function showUpload(value){
     uploadData = value;
@@ -454,17 +481,7 @@ close.forEach((c)=>{
     backdrop.classList.remove('modal-display');
     aboutContainer.classList.remove('more-margin');
 });
-})
-
-function setTemplate(templateId){
-    idIndex = templateId;
-}
-
-function getTemplate(){
-    return idIndex;
-}
-
-
+});
 
 //This will preview the template imaages.
  const eachTempImg = document.querySelectorAll('.template-div');
@@ -486,6 +503,7 @@ function getTemplate(){
                 const buyDiv = document.createElement('div');
                 const buyNow = document.createElement('button');
                 buyDiv.classList.add('center-div');
+                buyDiv.style.paddingBottom = '20px';
                 buyNow.textContent = 'Buy Now';
                 buyNow.addEventListener('click', function buy(e){
                     e.preventDefault();
@@ -520,10 +538,12 @@ function getTemplate(){
                         const checkOut = document.createElement('button');
                         checkOut.textContent = 'check out';
                         formInput.type = 'email';
+                        checkOut.type = 'submit';
                         formInput.placeholder = 'Please provide us a valid email to reach you.'
-                        checkOut.addEventListener('submit', function(e){
+                        checkOut.addEventListener('click', function(e){
                             e.preventDefault();
                             if(formInput.value.toLowerCase() == ''){
+                                formInput.style.borderColor = 'red';
                                 return;
                             }else{
                                 const imageId = getTemplate();
@@ -545,6 +565,7 @@ function getTemplate(){
                     // Create the <i> icon element (for the close icon)
                     modalCancel.classList.add('dismiss-modal');
                     const closeIcon = document.createElement('i');
+                    closeIcon.style.fontSize = '30px';
                     closeIcon.classList.add('bi', 'bi-x');
                     closeIcon.addEventListener('click', function close(){
                         imagePreviewDiv.removeChild(buyModal);

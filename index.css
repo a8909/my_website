@@ -4,7 +4,7 @@ body{
 html{
     scroll-behavior: smooth;
 }
-.questions,.web-standard,.web-subscription,.web-toggle,button,.web-aboutitem,a,.go-back, .menu-bar{cursor: pointer;}
+.questions,.web-standard,.web-subscription,.web-toggle,button,.web-aboutitem,a,.go-back, .menu-bar, .dismiss-modal{cursor: pointer;}
 nav{
     max-width: 500px;
 }
@@ -443,7 +443,7 @@ button{
 }
 
 .footer{
-    background: black;
+    background: darkslategray;
     color: #ffffff;
 }
 
