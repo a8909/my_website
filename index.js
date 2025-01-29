@@ -71,6 +71,7 @@ function uploadModal() {
                 // modalbdy.removeChild(form);
                 if(timerState){
                     timerState = null;
+                    clearInterval(timerState);
                     modalbdy.appendChild(passcodeDiv);
                 }
             }
@@ -225,10 +226,27 @@ webAbout.forEach((w) => {
 });
 
 //This makes a slide in effect if placed on an object
-window.addEventListener('load', onAnimate());
+window.addEventListener('load', onAnimate);
 function onAnimate() {
     const webContent = document.querySelector('.web-innercontent');
     webContent.classList.add('slideIn');
+    const backgroundImages = [
+        {id: 1, background: 'assets/3d-networkConnection.jpg'},
+        {id: 2, background: 'assets/bg-2.jpg'},
+        {id: 3, background: 'assets/bg-1.jpg'},
+    ]
+
+    idIndex = 0;
+        
+    timerState = setInterval(() => {
+        webContent.style.backgroundImage = `url(${backgroundImages[idIndex].background})`;
+        idIndex++;
+        
+        if(idIndex == backgroundImages.length){
+            idIndex = 0;
+        }
+    }, 3000);
+    
 }
 
 const products = [
@@ -601,3 +619,5 @@ close.forEach((c)=>{
             imageTemplate.classList.add('invisible');
             imageTemplate.remove();
     }
+
+
