@@ -66,9 +66,15 @@ function uploadModal() {
     getPasscodebtn.addEventListener('click', function getPasscode(e){
         e.preventDefault();
         timerState = setInterval(()=>{
-            if(e.type !== 'mousemove' && (modalbdy.contains(accessForm) || modalbdy.contains(form))){
-                modalbdy.removeChild(accessForm);
-                // modalbdy.removeChild(form);
+            if(e.type !== 'mousemove'){
+                if(modalbdy.contains(accessForm)){
+                    modalbdy.removeChild(accessForm);
+                }else{
+                    if(modalbdy.contains(form)){
+                        modalbdy.removeChild(form);
+                    }
+                }
+                
                 if(timerState){
                     timerState = null;
                     clearInterval(timerState);
@@ -121,6 +127,15 @@ function uploadModal() {
     imageDiv.classList.add('img-div');
     const imageInput = document.createElement('input');
     const image = document.createElement('img');
+    const dropdown = document.createElement('select');
+    const option_1 = document.createElement('option');
+    const option_2 = document.createElement('option');
+    dropdown.style.marginBottom = '10px';
+    dropdown.classList.add('email-input');
+    option_1.textContent = 'Standard';
+    option_2.textContent = 'Premium';
+    dropdown.appendChild(option_1);
+    dropdown.appendChild(option_2);
     image.classList.add('upload-img');
     const imageUploadtext = document.createElement('p');
     const uploadButton = document.createElement('button');
@@ -135,6 +150,9 @@ function uploadModal() {
             //set the url
             image.src = imageUrl;
             image.style.display = 'block';
+            if(imageUrl){
+                appendDropdown(dropdown);
+            }
         }
     }
     imageInput.addEventListener('change', onImageinput );
@@ -149,11 +167,12 @@ function uploadModal() {
     uploadButton.textContent = 'Upload';
     uploadButton.addEventListener('click', function(e){
         e.preventDefault();
-        if(imageInput.value == ''){
+        if(imageInput.value == '' || dropdown.value == ''){
             return;
        }else{
         //this value should be that same as the backend
         const value = imageInput.value;
+        const plan = dropdown.value;
         //call the api to post the data
         //clean up
         uploadContainer.innerHTML = '';
@@ -161,7 +180,10 @@ function uploadModal() {
     })
     
     form.appendChild(imageDiv);
-    form.appendChild(uploadButton);
+    function appendDropdown(child){
+        form.appendChild(child);
+        form.appendChild(uploadButton);
+    };
     closeModal.appendChild(span);
     modalbdy.appendChild(closeModal);
     modalbdy.appendChild(passcodeDiv);
@@ -236,14 +258,14 @@ function onAnimate() {
         {id: 3, background: 'assets/bg-1.jpg'},
     ]
 
-    idIndex = 0;
+    let backgroundindex = 0;
         
     timerState = setInterval(() => {
-        webContent.style.backgroundImage = `url(${backgroundImages[idIndex].background})`;
-        idIndex++;
+        webContent.style.backgroundImage = `url(${backgroundImages[backgroundindex].background})`;
+        backgroundindex++;
         
-        if(idIndex == backgroundImages.length){
-            idIndex = 0;
+        if(backgroundindex == backgroundImages.length){
+            backgroundindex = 0;
         }
     }, 3000);
     
