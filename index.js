@@ -15,11 +15,14 @@ const menuBar = document.querySelector('.menu-bar');
 let displayAnswer = false;
 let menu = false;
 let isLoading = false;
+let allTemplate = [];
 
 let div = document.createElement('div');
 let idIndex = 0;
 let uploadData = true;
 let timerState;
+
+const baseUrl = 'https://template-eight-lovat.vercel.app/apis';
 
 
 function setTemplate(templateId){
@@ -28,6 +31,19 @@ function setTemplate(templateId){
 
 function getTemplate(){
     return idIndex;
+}
+
+let modalContent = document.querySelector('.modal-content');
+
+//http request functions
+async function getallTemplate(){
+    const url = `${baseUrl}/templates`;
+    return await fetch(url, {
+        headers: {
+            'Content-Type': 'application/json',
+            'Access-Control-Allow-Origin' : '*'
+        }
+    })
 }
 
 menuBar.addEventListener('click', function toggleMenu(){
@@ -348,7 +364,33 @@ function standardModal(){
 }
 function premiumModal(){
     backdrop.classList.add('modal-display');
-    aboutContainer.classList.add('more-margin');  
+    aboutContainer.classList.add('more-margin');
+    isLoading = true;
+    if(isLoading == true){
+        const progress = document.querySelector('.progress-bar');
+        progress.style.width = '100%';
+        const spinner = `<div class="spinner-border" role="status">
+        <span class="visually-hidden">Loading...</span>
+        </div>`;
+        modalContent.innerHTML = spinner;
+    }
+    getallTemplate().then(
+        (response)=> response.json()).then(body => {
+            isLoading = false;
+            allTemplate = body.data;
+            console.log(isLoading)
+            allTemplate.forEach((image, identifier)=>{
+                console.log(image.imagepath);
+                let templatDiv = document.createElement('div');
+                templatDiv.classList.add('template-div')
+                templatDiv.setAttribute('unique', identifier);
+    
+                const cls = 'template-img';
+                const imgTag = `<img class="${cls}" src="${image.imagepath}" alt="template image">`;
+                templatDiv.innerHTML = imgTag;
+                modalContent.append(templatDiv);
+            })
+        })
 }
 div.classList.add('features');
 const subscriptionbtn = 'sub-btn';
@@ -500,18 +542,18 @@ const templateImages = [
     {id: 10, tempImg: "https://colorlib.com/wp/wp-content/uploads/sites/2/tri-o-beautiful-website-template.jpg.avif"},
 ]
 
-let modalContent = document.querySelector('.modal-content');
+// let modalContent = document.querySelector('.modal-content');
 
-templateImages.forEach((image, identifier)=>{
-    let templatDiv = document.createElement('div');
-    templatDiv.classList.add('template-div')
-    templatDiv.setAttribute('unique', identifier);
+// templateImages.forEach((image, identifier)=>{
+//     let templatDiv = document.createElement('div');
+//     templatDiv.classList.add('template-div')
+//     templatDiv.setAttribute('unique', identifier);
     
-    const cls = 'template-img';
-    const imgTag = `<img class="${cls}" src="${image.tempImg}" alt="template image">`;
-    templatDiv.innerHTML = imgTag;
-    modalContent.append(templatDiv);
-})
+//     const cls = 'template-img';
+//     const imgTag = `<img class="${cls}" src="${image.tempImg}" alt="template image">`;
+//     templatDiv.innerHTML = imgTag;
+//     modalContent.append(templatDiv);
+// })
 
 // standardShowtemplate.addEventListener('click', showTemplate('premim'));
 //This closes the modal

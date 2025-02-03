@@ -618,3 +618,8 @@ img{
 ol{
     list-style: disc;
 }
+.progress{
+    position: sticky;
+    z-index: 2000;
+    top: 0;
+}
