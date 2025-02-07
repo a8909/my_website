@@ -49,53 +49,74 @@ let modalContent = document.querySelector(".modal-content");
 
 //http request functions
 async function getallTemplate() {
-  const url = `${baseUrl}/templates`;
-  return await fetch(url, {
-    headers: {
-      "Content-Type": "application/json",
-      "Access-Control-Allow-Origin": "*",
-    },
-  });
+  try {
+    const url = `${baseUrl}/templates`;
+    return await fetch(url, {
+      headers: {
+        "Content-Type": "application/json",
+        "Access-Control-Allow-Origin": "*",
+      },
+    });
+  } catch (e) {
+    throw new Error(e);
+  }
 }
 
 //get single template request
 async function singleTemplate(id) {
-  const url = `${baseUrl}/templates/${id}`;
-  return await fetch(url);
+  try {
+    const url = `${baseUrl}/templates/${id}`;
+    return await fetch(url);
+  } catch (e) {
+    throw new Error(e);
+  }
 }
 
 async function getOtp() {
-  const url = `${baseUrl}/requestOtp`;
-  return await fetch(url, {
-    headers: { "Content-Type": "application/json" },
-  });
+  try {
+    const url = `${baseUrl}/requestOtp`;
+    return await fetch(url, {
+      headers: { "Content-Type": "application/json" },
+    });
+  } catch (e) {
+    throw new Error(e);
+  }
 }
 
 async function verifyOtp(otp_code) {
-  const url = `${baseUrl}/otp`;
-  return await fetch(url, {
-    method: "POST",
-    body: JSON.stringify({ otp_code }),
-    headers: { "Content-Type": "application/json" },
-  });
+  try {
+    const url = `${baseUrl}/otp`;
+    return await fetch(url, {
+      method: "POST",
+      body: JSON.stringify({ otp_code }),
+      headers: { "Content-Type": "application/json" },
+    });
+  } catch (e) {
+    throw new Error(e);
+  }
 }
 
-async function uploadTemplate(template) {
+async function uploadTemplate(name, price, imagepath, plan) {
   const url = `${baseUrl}/templates`;
   return await fetch(url, {
     method: "POST",
-    body: JSON.stringify({ template }),
+    body: JSON.stringify({ name, price, imagepath, plan }),
     headers: { "Content-Type": "application/json" },
   });
 }
 
-async function requestTemplate(template) {
-  const url = `${baseUrl}/requestTemplate`;
-  return await fetch(url, {
-    method: "POST",
-    body: JSON.stringify({ template }),
-    headers: { "Content-Type": "application/json" },
-  });
+async function requestTemplate(name, Email, templateid) {
+  try {
+    const url = `${baseUrl}/requestTemplate`;
+    return await fetch(url, {
+      method: "POST",
+      body: JSON.stringify({ name, Email, templateid }),
+      headers: { "Content-Type": "application/json" },
+      redirect: "follow",
+    });
+  } catch (e) {
+    throw new Error(`Error encountered id ${e}`);
+  }
 }
 
 menuBar.addEventListener("click", function toggleMenu() {
@@ -261,11 +282,12 @@ function uploadModal() {
         name: `${dropdown.value} plan`,
         price: "$400",
       };
-
-      uploadTemplate(template)
+      const { name, price, imagepath, plan } = template;
+      uploadTemplate(name, price, imagepath, plan)
         .then((response) => response.json())
         .then((data) => {
           if (data) {
+            console.log(data);
             uploadContainer.innerHTML = "";
           }
         });
@@ -425,6 +447,12 @@ subscription.forEach((plan) => {
         standard.classList.add("standard");
         backdrop.classList.remove("modal-display");
         aboutContainer.classList.remove("more-margin");
+        const queryTemplate = document.querySelectorAll(".template-div");
+        queryTemplate.forEach((qt) => {
+          if (qt) {
+            removeImagetemplate(qt);
+          }
+        });
         updateSubscription("standard");
       }
     } else {
@@ -436,6 +464,12 @@ subscription.forEach((plan) => {
           plan.classList.add("standard");
           backdrop.classList.remove("modal-display");
           aboutContainer.classList.remove("more-margin");
+          const queryTemplate = document.querySelectorAll(".template-div");
+          queryTemplate.forEach((qt) => {
+            if (qt) {
+              removeImagetemplate(qt);
+            }
+          });
         }
         updateSubscription("premium");
       }
@@ -458,13 +492,12 @@ function subscriptionModal() {
     currentPlan = premiumShowtemplate.getAttribute("plan");
   }
   isLoading = true;
-  const spinner = `<div class="spinner-border" role="status">
-        <span class="visually-hidden">Loading...</span>
-        </div>`;
+  const spinner = document.querySelector('.spinner');
   const progress = document.querySelector(".progress-bar");
   if (isLoading == true) {
+    progress.style.visibility = 'visible';
     progress.style.width = "100%";
-    // modalContent.innerHTML = spinner;
+    spinner.classList.add('visible');
   }
   getallTemplate()
     .then((response) => response.json())
@@ -472,6 +505,7 @@ function subscriptionModal() {
       isLoading = false;
       if (isLoading == false) {
         progress.style.width = "0";
+        spinner.classList.remove('visible');
         allTemplate = body.data;
         if (currentPlan == "premium") {
           allTemplate.forEach((image) => {
@@ -518,7 +552,7 @@ function subscriptionModal() {
             });
           });
           const eachTempImg = document.querySelectorAll(".template-div");
-          eachTempImg.forEach((i) => {
+          eachTempImg.forEach((i, index) => {
             i.addEventListener("click", function review() {
               const identifier = i.getAttribute("unique");
               singleTemplate(identifier)
@@ -530,90 +564,92 @@ function subscriptionModal() {
                       const template =
                         document.querySelectorAll(".template-div");
 
-                        template.forEach((t) => {
-                          t.classList.add("invisible");
-                          const imageTemplate =
-                            document.querySelector(".image-template");
-                            if(imageTemplate){
-                              removeImagetemplate(imageTemplate)
-                            }
-                        });
+                      template.forEach((t) => {
+                        t.classList.add("invisible");
+                        const imageTemplate =
+                          document.querySelector(".image-template");
+                        if (imageTemplate) {
+                          removeImagetemplate(imageTemplate);
+                        }
+                      });
 
-                        const image = i.querySelector(".template-img");
-                        //on preview take me to another page for preview main aim
-                        //preview the template image and go back to previous page
-                        let imagePreviewDiv = document.createElement("div");
-                        imagePreviewDiv.classList.add("image-template");
-                        const goBacktext = document.createElement("p");
-                        const buyDiv = document.createElement("div");
-                        const buyNow = document.createElement("button");
-                        buyDiv.classList.add("center-div");
-                        buyDiv.style.paddingBottom = "20px";
-                        buyNow.textContent = "Buy Now";
-                        buyNow.addEventListener("click", function buy(e) {
-                          e.preventDefault();
-                          const buyModal = document.createElement("div");
-                          buyModal.classList.add("buy-now");
-                          buyModal.classList.add("drag-up");
-                          const buyModalbody = document.createElement("div");
-                          const modalCancel = document.createElement("div");
-                          const contentDiv = document.createElement("div");
-                          contentDiv.classList.add("content-div");
-                          const accNo = document.createElement("h6");
-                          accNo.classList.add("acc-details");
-                          const accName = document.createElement("h6");
-                          accName.classList.add("acc-details");
-                          const bank = document.createElement("h6");
-                          bank.classList.add("acc-details");
-                          const payDiv = document.createElement("div");
-                          payDiv.classList.add("center-div");
-                          const paymentMade = document.createElement("button");
-                          paymentMade.classList.add("acc-details");
-                          paymentMade.textContent = "Payment made";
-                          accNo.textContent = "2263997831";
-                          accName.textContent =
-                            "shobola boluwatife joshua".toUpperCase();
-                          bank.textContent = "zenith bank".toUpperCase();
-                          paymentMade.addEventListener(
-                            "click",
-                            function onPaymentmade() {
-                              contentDiv.innerHTML = "";
-                              const emailForm = document.createElement("form");
-                              const inputDiv = document.createElement("div");
-                              inputDiv.classList.add("input-div");
-                              const formInput = document.createElement("input");
-                              formInput.classList.add("email-input");
-                              const checkOut = document.createElement("button");
-                              checkOut.textContent = "check out";
-                              formInput.type = "email";
-                              checkOut.type = "submit";
-                              formInput.placeholder =
-                                "Please provide us a valid email to reach you.";
-                              checkOut.addEventListener("click", function (e) {
-                                e.preventDefault();
-                                if (formInput.value.toLowerCase() == "") {
-                                  formInput.style.borderColor = "red";
-                                  return;
-                                } else {
-                                  const imageId = getTemplate();
-                                  // templateImages[imageId].tempImg;
-                                  const templateId = allTemplate[imageId].id;
-                                  const templateName = allTemplate[imageId].name;
-                                  const reqTemplate = {
-                                    name: templateName,
-                                    Email: formInput.value.toLowerCase(),
-                                    templateid: templateId,
-                                  };
-                                  //call an endpoint that send this post request to backend;
-                                  requestTemplate(reqTemplate)
-                                    .then((response) => response.json())
-                                    .then((data) => {
-                                      if (data) {
-                                        imagePreviewDiv.removeChild(buyModal);
-                                      }
-                                    });
-                                }
-                              });
+                      const image = i.querySelector(".template-img");
+                      //on preview take me to another page for preview main aim
+                      //preview the template image and go back to previous page
+                      let imagePreviewDiv = document.createElement("div");
+                      imagePreviewDiv.classList.add("image-template");
+                      const goBacktext = document.createElement("p");
+                      const buyDiv = document.createElement("div");
+                      const buyNow = document.createElement("button");
+                      buyDiv.classList.add("center-div");
+                      buyDiv.style.paddingBottom = "20px";
+                      buyDiv.style.marginTop = "20px";
+                      buyNow.textContent = "Buy Now";
+                      buyNow.addEventListener("click", function buy(e) {
+                        e.preventDefault();
+                        const buyModal = document.createElement("div");
+                        buyModal.classList.add("buy-now");
+                        buyModal.classList.add("drag-up");
+                        const buyModalbody = document.createElement("div");
+                        const modalCancel = document.createElement("div");
+                        const contentDiv = document.createElement("div");
+                        contentDiv.classList.add("content-div");
+                        const accNo = document.createElement("h6");
+                        accNo.classList.add("acc-details");
+                        const accName = document.createElement("h6");
+                        accName.classList.add("acc-details");
+                        const bank = document.createElement("h6");
+                        bank.classList.add("acc-details");
+                        const payDiv = document.createElement("div");
+                        payDiv.classList.add("center-div");
+                        const paymentMade = document.createElement("button");
+                        paymentMade.classList.add("acc-details");
+                        paymentMade.textContent = "Payment made";
+                        accNo.textContent = "2263997831";
+                        accName.textContent =
+                          "shobola boluwatife joshua".toUpperCase();
+                        bank.textContent = "zenith bank".toUpperCase();
+                        paymentMade.addEventListener(
+                          "click",
+                          function onPaymentmade() {
+                            contentDiv.innerHTML = "";
+                            const emailForm = document.createElement("form");
+                            const inputDiv = document.createElement("div");
+                            inputDiv.classList.add("input-div");
+                            const formInput = document.createElement("input");
+                            formInput.classList.add("email-input");
+                            const checkOut = document.createElement("button");
+                            checkOut.textContent = "check out";
+                            formInput.type = "email";
+                            checkOut.type = "submit";
+                            formInput.placeholder =
+                              "Please provide us a valid email to reach you.";
+                            checkOut.addEventListener("click", function (e) {
+                              e.preventDefault();
+                              if (formInput.value.toLowerCase() == "") {
+                                formInput.style.borderColor = "red";
+                                return;
+                              } else {
+                                const templateId = `${allTemplate[index].id}`;
+                                const templateName = allTemplate[index].name;
+
+                                //call an endpoint that send this post request to backend;
+                                requestTemplate(
+                                  templateName,
+                                  formInput.value.toLowerCase(),
+                                  templateId
+                                )
+                                  .then((response) => {
+                                    console.log(response.json());
+                                  })
+                                  .then((data) => {
+                                    if (data) {
+                                      console.log(data);
+                                      imagePreviewDiv.removeChild(buyModal);
+                                    }
+                                  });
+                              }
+                            });
                             inputDiv.appendChild(formInput);
                             inputDiv.appendChild(checkOut);
                             emailForm.appendChild(inputDiv);
@@ -881,148 +917,6 @@ const templateImages = [
   },
 ];
 
-// let modalContent = document.querySelector('.modal-content');
-
-// templateImages.forEach((image, identifier)=>{
-//     let templatDiv = document.createElement('div');
-//     templatDiv.classList.add('template-div')
-//     templatDiv.setAttribute('unique', identifier);
-
-//     const cls = 'template-img';
-//     const imgTag = `<img class="${cls}" src="${image.tempImg}" alt="template image">`;
-//     templatDiv.innerHTML = imgTag;
-//     modalContent.append(templatDiv);
-// })
-
-// standardShowtemplate.addEventListener('click', showTemplate('premim'));
-//This closes the modal
-
-//This will preview the template imaages.
-// const eachTempImg = document.querySelectorAll(".template-div");
-// eachTempImg.forEach((i)=>{
-//     i.addEventListener('click', function review(){
-//         const identifier = i.getAttribute('unique');
-//         singleTemplate(identifier).then(response =>{
-//             if(response.status == 200){
-//                 console.log('me')
-//                 setTemplate(identifier);
-//                 if(getTemplate() == identifier){
-//                 const template = document.querySelectorAll('.template-div');
-//                 template.forEach((t)=>{
-//                     t.classList.add('invisible');
-//                 });
-//                 const image =  i.querySelector('.template-img');
-//                 //on preview take me to another page for preview main aim
-//                 //preview the template image and go back to previous page
-//                 let imagePreviewDiv = document.createElement('div');
-//                 imagePreviewDiv.classList.add('image-template');
-//                 const goBacktext = document.createElement('p');
-//                 const buyDiv = document.createElement('div');
-//                 const buyNow = document.createElement('button');
-//                 buyDiv.classList.add('center-div');
-//                 buyDiv.style.paddingBottom = '20px';
-//                 buyNow.textContent = 'Buy Now';
-//                 buyNow.addEventListener('click', function buy(e){
-//                 e.preventDefault();
-//                 const buyModal = document.createElement('div');
-//                 buyModal.classList.add('buy-now');
-//                 buyModal.classList.add('drag-up');
-//                 const buyModalbody = document.createElement('div');
-//                 const modalCancel = document.createElement('div');
-//                 const contentDiv = document.createElement('div');
-//                 contentDiv.classList.add('content-div');
-//                 const accNo = document.createElement('h6');
-//                 accNo.classList.add('acc-details');
-//                 const accName = document.createElement('h6');
-//                 accName.classList.add('acc-details');
-//                 const bank = document.createElement('h6');
-//                 bank.classList.add('acc-details');
-//                 const payDiv = document.createElement('div');
-//                 payDiv.classList.add('center-div');
-//                 const paymentMade = document.createElement('button');
-//                 paymentMade.classList.add('acc-details');
-//                 paymentMade.textContent = 'Payment made';
-//                 accNo.textContent = '2263997831';
-//                 accName.textContent = 'shobola boluwatife joshua'.toUpperCase();
-//                 bank.textContent = 'zenith bank'.toUpperCase();
-//                 paymentMade.addEventListener('click', function onPaymentmade(){
-//                     contentDiv.innerHTML = '';
-//                     const emailForm = document.createElement('form');
-//                     const inputDiv = document.createElement('div');
-//                     inputDiv.classList.add('input-div');
-//                     const formInput = document.createElement('input');
-//                     formInput.classList.add('email-input')
-//                     const checkOut = document.createElement('button');
-//                     checkOut.textContent = 'check out';
-//                     formInput.type = 'email';
-//                     checkOut.type = 'submit';
-//                     formInput.placeholder = 'Please provide us a valid email to reach you.'
-//                     checkOut.addEventListener('click', function(e){
-//                         e.preventDefault();
-//                         if(formInput.value.toLowerCase() == ''){
-//                             formInput.style.borderColor = 'red';
-//                             return;
-//                         }else{
-//                             const imageId = getTemplate();
-//                             // templateImages[imageId].tempImg;
-//                             const templateId = allTemplate[imageId].id;
-//                             const templateName = allTemplate[imageId].name;
-//                             const reqTemplate = {
-//                                 name: templateName,
-//                                 Email: formInput.value.toLowerCase(),
-//                                 templateid: templateId
-//                             };
-//                             //call an endpoint that send this post request to backend;
-//                             requestTemplate(reqTemplate).then(response =>{
-//                                 if(response.ok){
-//                                     imagePreviewDiv.removeChild(buyModal);
-//                                 }
-//                             })
-//                         }
-//                     })
-//                     inputDiv.appendChild(formInput);
-//                     inputDiv.appendChild(checkOut);
-//                     emailForm.appendChild(inputDiv);
-//                     buyModalbody.appendChild(emailForm);
-//                 });
-//                 contentDiv.appendChild(accNo);
-//                 contentDiv.appendChild(accName);
-//                 contentDiv.appendChild(bank);
-//                 payDiv.appendChild(paymentMade);
-//                 contentDiv.appendChild(payDiv);
-
-//                 // Create the <i> icon element (for the close icon)
-//                 modalCancel.classList.add('dismiss-modal');
-//                 const closeIcon = document.createElement('i');
-//                 closeIcon.style.fontSize = '30px';
-//                 closeIcon.classList.add('bi', 'bi-x');
-//                 closeIcon.addEventListener('click', function close(){
-//                     imagePreviewDiv.removeChild(buyModal);
-//                 });
-//                 modalCancel.appendChild(closeIcon);
-//                 buyModalbody.appendChild(modalCancel);
-//                 buyModalbody.appendChild(contentDiv)
-//                 buyModal.innerHTML = '';
-//                 buyModal.appendChild(buyModalbody);
-//                 imagePreviewDiv.appendChild(buyModal)
-//             })
-//             goBacktext.classList.add('go-back');
-//             goBacktext.textContent = 'Go back';
-//             imagePreviewDiv.appendChild(goBacktext);
-//             image.classList.add('expand');
-//             imagePreviewDiv.appendChild(image.cloneNode(true));
-//             buyDiv.appendChild(buyNow);
-//             imagePreviewDiv.appendChild(buyDiv);
-//             modalContent.appendChild(imagePreviewDiv);
-//             const goBack = document.querySelector('.go-back');
-//             goBack.addEventListener('click', previousPage);
-
-//                 }
-//             }
-//         });
-//     });
-// })
-
 function removeImagetemplate(removeTemplate) {
   removeTemplate.remove();
 }
@@ -1032,8 +926,7 @@ function previousPage() {
   const imageTemplate = document.querySelector(".image-template");
   template.forEach((t) => {
     t.classList.remove("invisible");
-    
   });
   imageTemplate.classList.add("invisible");
-  removeImagetemplate(imageTemplate)
+  removeImagetemplate(imageTemplate);
 }
