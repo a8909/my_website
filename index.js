@@ -34,6 +34,7 @@ let div = document.createElement("div");
 let idIndex = 0;
 let uploadData = true;
 let timerState;
+let fileBundle;
 
 const baseUrl = "https://template-eight-lovat.vercel.app/apis";
 
@@ -72,6 +73,20 @@ async function singleTemplate(id) {
   }
 }
 
+async function deleteTemplate(id) {
+  try {
+    const url = `${baseUrl}/templates/${id}`;
+    return await fetch(url, {
+      method: "DELETE",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+  } catch (e) {
+    throw new Error(e);
+  }
+}
+
 async function getOtp() {
   try {
     const url = `${baseUrl}/requestOtp`;
@@ -97,26 +112,47 @@ async function verifyOtp(otp_code) {
 }
 
 async function uploadTemplate(name, price, imagepath, plan) {
-  const url = `${baseUrl}/templates`;
-  return await fetch(url, {
-    method: "POST",
-    body: JSON.stringify({ name, price, imagepath, plan }),
-    headers: { "Content-Type": "application/json" },
-  });
+  const formData = new FormData();
+  formData.append("name", name);
+  formData.append("price", price);
+  formData.append("imagepath", imagepath);
+  formData.append("plan", plan);
+  try {
+    const url = `${baseUrl}/templates`;
+    return await fetch(url, {
+      method: "POST",
+      body: formData,
+      headers: {
+        Accept: "application/json",
+      },
+    });
+  } catch (e) {
+    throw new Error(e);
+  }
 }
 
-async function requestTemplate(name, Email, templateid) {
+async function requestTemplate(name, email, templateId) {
+  const formData = new FormData();
+  formData.append("name", name);
+  formData.append("email", email);
+  formData.append("templateId", templateId);
   try {
     const url = `${baseUrl}/requestTemplate`;
     return await fetch(url, {
       method: "POST",
-      body: JSON.stringify({ name, Email, templateid }),
-      headers: { "Content-Type": "application/json" },
-      redirect: "follow",
+      body: formData,
     });
   } catch (e) {
     throw new Error(`Error encountered id ${e}`);
   }
+}
+
+function setimageFile(value) {
+  fileBundle = value;
+}
+
+function getimageFile() {
+  return fileBundle;
 }
 
 menuBar.addEventListener("click", function toggleMenu() {
@@ -250,14 +286,18 @@ function uploadModal() {
   function onImageinput(e) {
     e.preventDefault();
     const imageFile = e.target.files[0];
+    setimageFile(imageFile);
     if (imageFile) {
-      const imageUrl = URL.createObjectURL(imageFile);
-      //set the url
-      image.src = imageUrl;
-      image.style.display = "block";
-      if (imageUrl) {
-        appendDropdown(dropdown);
-      }
+      const reader = new FileReader();
+      reader.onload = function (e) {
+        const imageUrl = e.target.result;
+        image.src = imageUrl;
+        image.classList.add("visible");
+        if (imageUrl) {
+          appendDropdown(dropdown);
+        }
+      };
+      reader.readAsDataURL(imageFile);
     }
   }
   imageInput.addEventListener("change", onImageinput);
@@ -277,9 +317,9 @@ function uploadModal() {
     } else {
       //this value should be that same as the backend
       const template = {
-        imagepath: imageInput.value,
-        plan: dropdown.value,
-        name: `${dropdown.value} plan`,
+        imagepath: getimageFile(),
+        plan: dropdown.value.toLocaleLowerCase(),
+        name: `${dropdown.value} plan`.toLocaleLowerCase(),
         price: "$400",
       };
       const { name, price, imagepath, plan } = template;
@@ -287,7 +327,6 @@ function uploadModal() {
         .then((response) => response.json())
         .then((data) => {
           if (data) {
-            console.log(data);
             uploadContainer.innerHTML = "";
           }
         });
@@ -492,12 +531,12 @@ function subscriptionModal() {
     currentPlan = premiumShowtemplate.getAttribute("plan");
   }
   isLoading = true;
-  const spinner = document.querySelector('.spinner');
+  const spinner = document.querySelector(".spinner");
   const progress = document.querySelector(".progress-bar");
   if (isLoading == true) {
-    progress.style.visibility = 'visible';
+    progress.style.visibility = "visible";
     progress.style.width = "100%";
-    spinner.classList.add('visible');
+    spinner.classList.add("visible");
   }
   getallTemplate()
     .then((response) => response.json())
@@ -505,7 +544,7 @@ function subscriptionModal() {
       isLoading = false;
       if (isLoading == false) {
         progress.style.width = "0";
-        spinner.classList.remove('visible');
+        spinner.classList.remove("visible");
         allTemplate = body.data;
         if (currentPlan == "premium") {
           allTemplate.forEach((image) => {
@@ -513,10 +552,25 @@ function subscriptionModal() {
               let templatDiv = document.createElement("div");
               templatDiv.classList.add("template-div");
               templatDiv.setAttribute("unique", image.id);
-
+              const deleteImage = document.createElement("i");
+              deleteImage.classList.add("bi", "bi-trash3");
+              deleteImage.addEventListener("click", deleteItem, {
+                signal: deleteImage.setAttribute("delete", "item"),
+              });
+              function deleteItem() {
+                const item = deleteImage.getAttribute("delete");
+                if (item == "item") {
+                  deleteTemplate(templatDiv.getAttribute("unique"))
+                    .then((response) => response.json())
+                    .then((data) => {
+                      data;
+                    });
+                }
+              }
               const cls = "template-img";
               const imgTag = `<img class="${cls}" src="${image.imagepath}" alt="template image">`;
               templatDiv.innerHTML = imgTag;
+              templatDiv.appendChild(deleteImage);
               modalContent.append(templatDiv);
               planControl(templatDiv);
             }
@@ -527,10 +581,26 @@ function subscriptionModal() {
               let templatDiv = document.createElement("div");
               templatDiv.classList.add("template-div");
               templatDiv.setAttribute("unique", image.id);
+              const deleteImage = document.createElement("i");
+              deleteImage.classList.add("bi", "bi-trash3");
+              deleteImage.addEventListener("click", deleteItem, {
+                signal: deleteImage.setAttribute("delete", "item"),
+              });
+              function deleteItem() {
+                const item = deleteImage.getAttribute("delete");
+                if (item == "item") {
+                  deleteTemplate(templatDiv.getAttribute("unique"))
+                    .then((response) => response.json())
+                    .then((data) => {
+                      data;
+                    });
+                }
+              }
 
               const cls = "template-img";
               const imgTag = `<img class="${cls}" src="${image.imagepath}" alt="template image">`;
               templatDiv.innerHTML = imgTag;
+              templatDiv.appendChild(deleteImage);
               modalContent.append(templatDiv);
               planControl(templatDiv);
             }
@@ -541,7 +611,6 @@ function subscriptionModal() {
           const close = document.querySelectorAll(".close");
           close.forEach((c) => {
             c.addEventListener("click", function closeModal() {
-              console.log(c);
               backdrop.classList.remove("modal-display");
               aboutContainer.classList.remove("more-margin");
               if (templatetoRemove) {
@@ -632,19 +701,19 @@ function subscriptionModal() {
                               } else {
                                 const templateId = `${allTemplate[index].id}`;
                                 const templateName = allTemplate[index].name;
-
                                 //call an endpoint that send this post request to backend;
                                 requestTemplate(
                                   templateName,
-                                  formInput.value.toLowerCase(),
+                                  formInput.value,
                                   templateId
                                 )
-                                  .then((response) => {
-                                    console.log(response.json());
-                                  })
+                                  .then((response) => response.json())
                                   .then((data) => {
-                                    if (data) {
-                                      console.log(data);
+                                    const { template } = data;
+                                    if (
+                                      template ===
+                                      "Template request processed successfully"
+                                    ) {
                                       imagePreviewDiv.removeChild(buyModal);
                                     }
                                   });
@@ -687,6 +756,13 @@ function subscriptionModal() {
                       modalContent.appendChild(imagePreviewDiv);
                       const goBack = document.querySelector(".go-back");
                       goBack.addEventListener("click", previousPage);
+                    } else {
+                      if (data === null || data === "") {
+                        const noContent = document.createElement("span");
+                        noContent.textContent = "No content to display";
+                        console.log(noContent);
+                        // templatDiv.appendChild(noContent);
+                      }
                     }
                   }
                 });

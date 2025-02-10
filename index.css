@@ -164,7 +164,7 @@ form{
 
 .spinner-border{
     position: relative;
-    left: 150;
+    left: 242;
     top: 0%;
 }
 .center-div{
@@ -608,6 +608,10 @@ img{
 
 .visible{
     display: block !important;
+}
+
+.bi-trash3{
+    position: absolute;
 }
 
 .go-back{
