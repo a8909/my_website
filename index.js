@@ -240,8 +240,10 @@ function uploadModal() {
         verifyOtp(passcodeInput.value)
           .then((response) => response.json())
           .then((data) => {
-            console.log(data);
-            if (data.errorMessage) {
+            const { errorMessage, message } = data;
+            if (errorMessage) {
+              accessForm.reset();
+              isLoading = false;
               return;
             } else {
               modalbdy.removeChild(accessForm);
@@ -554,18 +556,21 @@ function subscriptionModal() {
               templatDiv.setAttribute("unique", image.id);
               const deleteImage = document.createElement("i");
               deleteImage.classList.add("bi", "bi-trash3");
-              deleteImage.addEventListener("click", deleteItem, {
-                signal: deleteImage.setAttribute("delete", "item"),
-              });
+              deleteImage.addEventListener("click", deleteItem);
               function deleteItem() {
-                const item = deleteImage.getAttribute("delete");
-                if (item == "item") {
-                  deleteTemplate(templatDiv.getAttribute("unique"))
-                    .then((response) => response.json())
-                    .then((data) => {
-                      data;
-                    });
-                }
+                allTemplate.splice(
+                  deleteTemplate(templatDiv.getAttribute("unique")),
+                  1
+                );
+                const t = document.querySelectorAll(".template-div");
+                t.forEach((item) => {
+                  if (
+                    item.getAttribute("unique") ===
+                    templatDiv.getAttribute("unique")
+                  ) {
+                    item.remove();
+                  }
+                });
               }
               const cls = "template-img";
               const imgTag = `<img class="${cls}" src="${image.imagepath}" alt="template image">`;
@@ -583,18 +588,21 @@ function subscriptionModal() {
               templatDiv.setAttribute("unique", image.id);
               const deleteImage = document.createElement("i");
               deleteImage.classList.add("bi", "bi-trash3");
-              deleteImage.addEventListener("click", deleteItem, {
-                signal: deleteImage.setAttribute("delete", "item"),
-              });
+              deleteImage.addEventListener("click", deleteItem);
               function deleteItem() {
-                const item = deleteImage.getAttribute("delete");
-                if (item == "item") {
-                  deleteTemplate(templatDiv.getAttribute("unique"))
-                    .then((response) => response.json())
-                    .then((data) => {
-                      data;
-                    });
-                }
+                allTemplate.splice(
+                  deleteTemplate(templatDiv.getAttribute("unique")),
+                  1
+                );
+                const t = document.querySelectorAll(".template-div");
+                t.forEach((item) => {
+                  if (
+                    item.getAttribute("unique") ===
+                    templatDiv.getAttribute("unique")
+                  ) {
+                    item.remove();
+                  }
+                });
               }
 
               const cls = "template-img";
