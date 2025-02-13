@@ -35,6 +35,9 @@ let idIndex = 0;
 let uploadData = true;
 let timerState;
 let fileBundle;
+// This environment if change to prod = true, it will not display the templateImage deletebtn it action are deactivated
+//if otherwise that will be on local then
+let environmentProduction = false;
 
 const baseUrl = "https://template-eight-lovat.vercel.app/apis";
 
@@ -147,11 +150,11 @@ async function requestTemplate(name, email, templateId) {
   }
 }
 
-function setimageFile(value) {
+function setglobalVariable(value) {
   fileBundle = value;
 }
 
-function getimageFile() {
+function getglobalVariable() {
   return fileBundle;
 }
 
@@ -231,6 +234,7 @@ function uploadModal() {
           passcodeInput.value == ""
         ) {
           passcodeInput.style.borderColor = "red";
+          isLoading = false;
           return;
         }
         isLoading = true;
@@ -288,7 +292,7 @@ function uploadModal() {
   function onImageinput(e) {
     e.preventDefault();
     const imageFile = e.target.files[0];
-    setimageFile(imageFile);
+    setglobalVariable(imageFile);
     if (imageFile) {
       const reader = new FileReader();
       reader.onload = function (e) {
@@ -319,7 +323,7 @@ function uploadModal() {
     } else {
       //this value should be that same as the backend
       const template = {
-        imagepath: getimageFile(),
+        imagepath: getglobalVariable(),
         plan: dropdown.value.toLocaleLowerCase(),
         name: `${dropdown.value} plan`.toLocaleLowerCase(),
         price: "$400",
@@ -330,6 +334,11 @@ function uploadModal() {
         .then((data) => {
           if (data) {
             uploadContainer.innerHTML = "";
+            const uploadSuccess = document.querySelector(".upload-text");
+            uploadSuccess.textContent = "Successfully Uploaded";
+            setTimeout(() => {
+              uploadSuccess.textContent = null;
+            }, 3000);
           }
         });
     }
@@ -554,28 +563,34 @@ function subscriptionModal() {
               let templatDiv = document.createElement("div");
               templatDiv.classList.add("template-div");
               templatDiv.setAttribute("unique", image.id);
-              const deleteImage = document.createElement("i");
-              deleteImage.classList.add("bi", "bi-trash3");
-              deleteImage.addEventListener("click", deleteItem);
-              function deleteItem() {
-                allTemplate.splice(
-                  deleteTemplate(templatDiv.getAttribute("unique")),
-                  1
-                );
-                const t = document.querySelectorAll(".template-div");
-                t.forEach((item) => {
-                  if (
-                    item.getAttribute("unique") ===
-                    templatDiv.getAttribute("unique")
-                  ) {
-                    item.remove();
-                  }
-                });
+              if (environmentProduction == false) {
+                const deleteImage = document.createElement("i");
+                deleteImage.classList.add("bi", "bi-trash3");
+                deleteImage.addEventListener("click", deleteItem);
+                function deleteItem() {
+                  allTemplate.splice(
+                    deleteTemplate(templatDiv.getAttribute("unique")),
+                    1
+                  );
+                  const t = document.querySelectorAll(".template-div");
+                  t.forEach((item) => {
+                    if (
+                      item.getAttribute("unique") ===
+                      templatDiv.getAttribute("unique")
+                    ) {
+                      item.remove();
+                    }
+                  });
+                }
+                setglobalVariable(deleteImage);
               }
+
               const cls = "template-img";
               const imgTag = `<img class="${cls}" src="${image.imagepath}" alt="template image">`;
               templatDiv.innerHTML = imgTag;
-              templatDiv.appendChild(deleteImage);
+              environmentProduction == false
+                ? templatDiv.appendChild(getglobalVariable())
+                : null;
               modalContent.append(templatDiv);
               planControl(templatDiv);
             }
@@ -586,29 +601,37 @@ function subscriptionModal() {
               let templatDiv = document.createElement("div");
               templatDiv.classList.add("template-div");
               templatDiv.setAttribute("unique", image.id);
-              const deleteImage = document.createElement("i");
-              deleteImage.classList.add("bi", "bi-trash3");
-              deleteImage.addEventListener("click", deleteItem);
-              function deleteItem() {
-                allTemplate.splice(
-                  deleteTemplate(templatDiv.getAttribute("unique")),
-                  1
-                );
-                const t = document.querySelectorAll(".template-div");
-                t.forEach((item) => {
-                  if (
-                    item.getAttribute("unique") ===
-                    templatDiv.getAttribute("unique")
-                  ) {
-                    item.remove();
-                  }
+              if (environmentProduction == false) {
+                const deleteImage = document.createElement("i");
+                deleteImage.classList.add("bi", "bi-trash3");
+                deleteImage.addEventListener("click", deleteItem, {
+                  signal: deleteImage.setAttribute("delete", "standard-plan"),
                 });
+                function deleteItem() {
+                  allTemplate.splice(
+                    deleteTemplate(templatDiv.getAttribute("unique")),
+                    1
+                  );
+
+                  const t = document.querySelectorAll(".template-div");
+                  t.forEach((item) => {
+                    if (
+                      item.getAttribute("unique") ===
+                      templatDiv.getAttribute("unique")
+                    ) {
+                      item.remove();
+                    }
+                  });
+                }
+                setglobalVariable(deleteImage);
               }
 
               const cls = "template-img";
               const imgTag = `<img class="${cls}" src="${image.imagepath}" alt="template image">`;
               templatDiv.innerHTML = imgTag;
-              templatDiv.appendChild(deleteImage);
+              environmentProduction == false
+                ? templatDiv.appendChild(getglobalVariable())
+                : null;
               modalContent.append(templatDiv);
               planControl(templatDiv);
             }
@@ -768,7 +791,6 @@ function subscriptionModal() {
                       if (data === null || data === "") {
                         const noContent = document.createElement("span");
                         noContent.textContent = "No content to display";
-                        console.log(noContent);
                         // templatDiv.appendChild(noContent);
                       }
                     }
@@ -776,6 +798,7 @@ function subscriptionModal() {
                 });
             });
           });
+          
         }
       }
     });
@@ -800,7 +823,7 @@ webFeatureParentdiv.appendChild(div);
 function updateSubscription(subcriptionPacakge) {
   let price = document.querySelector(".web-amount");
   if (subcriptionPacakge == "standard") {
-    price.textContent = "N80,000.00";
+    price.textContent = "N150,000.00";
     div.classList.add("features");
     const featuresIncluded = document.createElement("div");
     featuresIncluded.classList.add("feature-include");
@@ -829,7 +852,7 @@ function updateSubscription(subcriptionPacakge) {
       signal: standardshowTemplate.setAttribute("plan", "standard"),
     });
   } else {
-    price.textContent = "N100,000.00";
+    price.textContent = "N180,000.00";
     div.classList.add("features");
     const standardbtn = "std-btn";
     const featuresIncluded = document.createElement("div");
