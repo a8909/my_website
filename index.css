@@ -133,6 +133,10 @@ a:hover{
     font-family: sans-serif;
 }
 
+.template-div{
+    box-shadow: 0 4px 8px 0 rgba(116, 115, 115, 0.1), 0 6px 20px 0 rgba(124, 123, 123, 0.19);
+}
+
 
 form{
     display: flex;
@@ -563,8 +567,8 @@ h5{text-align: center; font-weight: 800;font-size: 40px;}
     background: darkcyan;
     width: 250px;
     margin: 0px 10px 13px 10px;
-    padding: 10px;
-    border-radius: 5px;
+    padding: 20px;
+    border-radius: 15px;
 }
 
 .web-aboutitem:hover{

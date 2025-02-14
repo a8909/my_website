@@ -37,7 +37,7 @@ let timerState;
 let fileBundle;
 // This environment if change to prod = true, it will not display the templateImage deletebtn it action are deactivated
 //if otherwise that will be on local then
-let environmentProduction = false;
+let environmentProduction = true;
 
 const baseUrl = "https://template-eight-lovat.vercel.app/apis";
 
