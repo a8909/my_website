@@ -228,7 +228,7 @@ form{
    
 }
 .web-about{
-    background: lightsalmon;
+    background: darkcyan;
     padding: 20px;
 }
 
@@ -445,10 +445,16 @@ button{
     transition: transform 0.3s ease-in, opacity 0.3s ease-in;
 }
 
+
+.question-dropdowndiv{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
 .questions{
     background: rgb(248, 248, 248);
     border-radius: 6px;
-    margin: 3px;
+    margin: 3px 3px 10px 3px;
     padding: 10px;
     box-shadow: 0 4px 8px 0 rgba(116, 115, 115, 0.1), 0 6px 20px 0 rgba(124, 123, 123, 0.19);
 }
@@ -469,7 +475,7 @@ button{
 }
 
 .footer{
-    background: darkslategray;
+    background: darkcyan;
     color: #ffffff;
 }
 
@@ -564,7 +570,7 @@ h5{text-align: center; font-weight: 800;font-size: 40px;}
 }
 
 .web-aboutitem{
-    background: darkcyan;
+    border: 1px solid #ffffff;
     width: 250px;
     margin: 0px 10px 13px 10px;
     padding: 20px;
@@ -582,6 +588,7 @@ h5{text-align: center; font-weight: 800;font-size: 40px;}
     justify-content: center;
     border-radius: 50%;
     background: #ffffff;
+    color: darkcyan;
     padding: 4px 20px 4px 20px;
     margin-left: auto;
     margin-right: auto;

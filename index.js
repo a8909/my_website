@@ -407,7 +407,7 @@ webAbout.forEach((w) => {
   const aboutItem = document.createElement("div");
   aboutItem.classList.add("web-aboutitem");
   const aboutContent = `<h4 class='web-aboutid'>${w.id}</h4>
-    <p class='web-abouttxt'>${w.content}</p>`;
+    <p class='web-abouttxt text-white'>${w.content}</p>`;
   aboutItem.innerHTML = aboutContent;
   about.append(aboutItem);
 });
@@ -943,10 +943,25 @@ faqs.forEach((faq, index) => {
   question.setAttribute("faqIndex", index);
   const answer = "answer";
   const option = "question";
-  const questions = `<h6 class=${option}>${faq.question}</h6>
-    <span class= ${answer}>${faq.answer}</span>`;
-  question.innerHTML = questions;
-  webFaq.append(question);
+  // <i class="bi bi-chevron-down"></i>;
+  // const questions = `<h6 class=${option}>${faq.question}</h6>
+  //   <span class= ${answer}>${faq.answer}</span>`;
+    const questionDropdown = document.createElement('div');
+    questionDropdown.classList.add('question-dropdowndiv');
+    const h6 = document.createElement('h6');
+    const i = document.createElement('i');
+    const span = document.createElement('span');
+    span.classList.add(answer);
+    i.classList.add("bi", "bi-chevron-down");
+    h6.classList.add(option);
+    h6.textContent = `${faq.question}`;
+    span.textContent = `${faq.answer}`;
+    questionDropdown.appendChild(h6);
+    questionDropdown.appendChild(i);
+    question.innerHTML = '';
+    question.appendChild(questionDropdown)
+    question.appendChild(span);
+  webFaq.appendChild(question);
 });
 
 //loop through all the questions to get each answer.
@@ -958,14 +973,24 @@ faqQuestions.forEach((answer) => {
     displayAnswer = !displayAnswer;
     let displayFaqAnswer = answer.querySelector(".answer");
     const index = answer.getAttribute("faqIndex");
+    const arrowDown = answer.querySelector(".bi-chevron-down");
     idIndex = faqs[index];
-    if (displayAnswer) {
+    if (displayAnswer && arrowDown) {
       if (idIndex == faqs[index]) {
         displayFaqAnswer.classList.add("show");
+        arrowDown.classList.remove("bi-chevron-down");
+        arrowDown.classList.add("bi", "bi-chevron-up");
       }
-    } else {
+    } 
+    else {
+      const arrowUp = document.querySelector(".bi-chevron-up");
       displayFaqAnswer.classList.remove("show");
+      if(arrowUp){
+        arrowUp.classList.remove("bi", "bi-chevron-up");
+        arrowUp.classList.add("bi", "bi-chevron-down");
+      }
     }
+    
   });
 });
 
