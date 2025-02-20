@@ -578,7 +578,8 @@ function subscriptionModal() {
                       item.getAttribute("unique") ===
                       templatDiv.getAttribute("unique")
                     ) {
-                      item.remove();
+                      // item.remove();
+                      removeImagetemplate(item);
                     }
                   });
                 }
@@ -607,6 +608,8 @@ function subscriptionModal() {
                 deleteImage.addEventListener("click", deleteItem, {
                   signal: deleteImage.setAttribute("delete", "standard-plan"),
                 });
+                //This funtion delete i item from the list of items, checks the DOM if the templateDiv exist 
+                //and if it does exist loop through and remove the element from DOM
                 function deleteItem() {
                   allTemplate.splice(
                     deleteTemplate(templatDiv.getAttribute("unique")),
@@ -619,7 +622,8 @@ function subscriptionModal() {
                       item.getAttribute("unique") ===
                       templatDiv.getAttribute("unique")
                     ) {
-                      item.remove();
+                      // item.remove();
+                      removeImagetemplate(item);
                     }
                   });
                 }
@@ -888,7 +892,7 @@ standardShowtemplate.addEventListener("click", subscriptionModal, {
   signal: standardShowtemplate.setAttribute("plan", "standard"),
 });
 
-//This is for the faqs
+//This is for the faqs(Frequently asked questions)
 const faqs = [
   {
     id: 1,
@@ -943,9 +947,6 @@ faqs.forEach((faq, index) => {
   question.setAttribute("faqIndex", index);
   const answer = "answer";
   const option = "question";
-  // <i class="bi bi-chevron-down"></i>;
-  // const questions = `<h6 class=${option}>${faq.question}</h6>
-  //   <span class= ${answer}>${faq.answer}</span>`;
     const questionDropdown = document.createElement('div');
     questionDropdown.classList.add('question-dropdowndiv');
     const h6 = document.createElement('h6');
@@ -966,7 +967,7 @@ faqs.forEach((faq, index) => {
 
 //loop through all the questions to get each answer.
 //listen to click, if click the displayAnswer is a boolean which act with respect to click event
-//if true,it get the attribute of the question to display the answer otherwise it coses the answer
+//if true,it get the attribute of the question to display the answer otherwise it closes the answer
 const faqQuestions = document.querySelectorAll(".questions");
 faqQuestions.forEach((answer) => {
   answer.addEventListener("click", function showAnswer() {
@@ -994,65 +995,12 @@ faqQuestions.forEach((answer) => {
   });
 });
 
-//This request should be coming from an end point not doing it like this
-//This list here is meant to display all website template image from backEnd.
-const templateImages = [
-  {
-    id: 1,
-    tempImg:
-      "https://colorlib.com/wp/wp-content/uploads/sites/2/tri-o-beautiful-website-template.jpg.avif",
-  },
-  {
-    id: 2,
-    tempImg:
-      "https://colorlib.com/wp/wp-content/uploads/sites/2/tri-o-beautiful-website-template.jpg.avif",
-  },
-  {
-    id: 3,
-    tempImg:
-      "https://colorlib.com/wp/wp-content/uploads/sites/2/tri-o-beautiful-website-template.jpg.avif",
-  },
-  {
-    id: 4,
-    tempImg:
-      "https://colorlib.com/wp/wp-content/uploads/sites/2/tri-o-beautiful-website-template.jpg.avif",
-  },
-  {
-    id: 5,
-    tempImg:
-      "https://colorlib.com/wp/wp-content/uploads/sites/2/tri-o-beautiful-website-template.jpg.avif",
-  },
-  {
-    id: 6,
-    tempImg:
-      "https://colorlib.com/wp/wp-content/uploads/sites/2/tri-o-beautiful-website-template.jpg.avif",
-  },
-  {
-    id: 7,
-    tempImg:
-      "https://colorlib.com/wp/wp-content/uploads/sites/2/tri-o-beautiful-website-template.jpg.avif",
-  },
-  {
-    id: 8,
-    tempImg:
-      "https://colorlib.com/wp/wp-content/uploads/sites/2/tri-o-beautiful-website-template.jpg.avif",
-  },
-  {
-    id: 9,
-    tempImg:
-      "https://colorlib.com/wp/wp-content/uploads/sites/2/tri-o-beautiful-website-template.jpg.avif",
-  },
-  {
-    id: 10,
-    tempImg:
-      "https://colorlib.com/wp/wp-content/uploads/sites/2/tri-o-beautiful-website-template.jpg.avif",
-  },
-];
-
+//This function should be called anytime you want to remove an element from the DOM
 function removeImagetemplate(removeTemplate) {
   removeTemplate.remove();
 }
 
+//This navigate back to the previous page if a template id being seleected
 function previousPage() {
   const template = document.querySelectorAll(".template-div");
   const imageTemplate = document.querySelector(".image-template");
