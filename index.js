@@ -1000,7 +1000,7 @@ function removeImagetemplate(removeTemplate) {
   removeTemplate.remove();
 }
 
-//This navigate back to the previous page if a template id being seleected
+//This navigate back to the previous page if a template is being seleected
 function previousPage() {
   const template = document.querySelectorAll(".template-div");
   const imageTemplate = document.querySelector(".image-template");

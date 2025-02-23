@@ -1,0 +1,12 @@
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+
+    # 1. Redirect from HTTPS to HTTP
+    RewriteCond %{HTTPS} on
+    RewriteRule ^ http://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
+
+    # 2. Redirect all requests to index.html (Angular routing)
+    RewriteCond %{REQUEST_FILENAME} !-f
+    RewriteCond %{REQUEST_FILENAME} !-d
+    RewriteRule . /index.html [L]
+</IfModule>
