@@ -228,7 +228,7 @@ form{
    
 }
 .web-about{
-    background: darkcyan;
+    background: #008B8B;
     padding: 20px;
 }
 
@@ -305,6 +305,7 @@ form{
     @media(max-width: 375px){
         max-width: 300px;
         padding: 20px;
+        height: 604px
     }
 }
 
@@ -476,7 +477,7 @@ button{
 }
 
 .footer{
-    background: darkcyan;
+    background: #008B8B;
     color: #ffffff;
 }
 
