@@ -30,6 +30,7 @@ let menu = false;
 let isLoading = false;
 let allTemplate = [];
 
+
 let div = document.createElement("div");
 let idIndex = 0;
 let uploadData = true;
