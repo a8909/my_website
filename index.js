@@ -375,7 +375,7 @@ function showUpload(value) {
 
 function closeUpload() {}
 //By default this should be false. Reason being that the access to the funtion should be enabled if admin want to upload new template
-window.addEventListener("DOMContentLoaded", showUpload(true));
+window.addEventListener("DOMContentLoaded", showUpload(false));
 
 //This is used to target the scroll using getBoundingClientReact(),
 //if the react.top <= window.innerHeight means the element top is below the window inner height the effect come alive
