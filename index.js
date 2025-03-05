@@ -649,10 +649,15 @@ function subscriptionModal() {
             c.addEventListener("click", function closeModal() {
               backdrop.classList.remove("modal-display");
               aboutContainer.classList.remove("more-margin");
+              const imageTemplate = document.querySelector('.image-template');
               if (templatetoRemove) {
                 templatetoRemove.innerHTML = "";
-                templatetoRemove.remove();
+                removeImagetemplate(templatetoRemove);
                 modalBody.appendChild(modalContent);
+              }
+              if(imageTemplate){
+                imageTemplate.innerHTML = "";
+                removeImagetemplate(imageTemplate);
               }
             });
           });
