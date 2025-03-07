@@ -983,7 +983,7 @@ faqQuestions.forEach((answer) => {
     const arrowDown = answer.querySelector(".bi-chevron-down");
     idIndex = faqs[index];
     if (displayAnswer && arrowDown) {
-      if (idIndex == faqs[index]) {
+      if (idIndex === faqs[index]) {
         displayFaqAnswer.classList.add("show");
         arrowDown.classList.remove("bi-chevron-down");
         arrowDown.classList.add("bi", "bi-chevron-up");
