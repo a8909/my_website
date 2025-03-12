@@ -353,7 +353,7 @@ button{
 }
 .modal-display{
     width: 100vw;
-    height: 57vh;
+    height: 78vh;
     background: rgb(255 255 255 / 30%);
     z-index: 100;
     position: absolute;
@@ -412,6 +412,12 @@ button{
     }
 }
 
+
+@media(max-width: 540px){
+    .buy{
+        margin-left: 25px !important;
+    }
+}
 .p{
     line-height: 20px;
     font-size: 20px;
@@ -525,8 +531,19 @@ h5{text-align: center; font-weight: 800;font-size: 40px;}
         top: 349px;
     }
     @media(max-width: 540px){
-        left: 12px;
+        left: 18px;
     }
+}
+
+.important-tag{
+    width: fit-content;
+    background: rgb(189, 189, 196);
+    color: rgb(255, 255, 255);
+    padding: 5px;
+    font-size: 13px;
+    font-weight: 700;
+    border-radius: 7px;
+    border: rgb(189, 189, 196);
 }
 
 .content-div{
@@ -560,6 +577,7 @@ h5{text-align: center; font-weight: 800;font-size: 40px;}
     align-items: center;
     justify-content: center;
     margin-right: 5px;
+    z-index: 100;
 }
 
 .web-contact>img{

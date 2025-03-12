@@ -692,8 +692,10 @@ function subscriptionModal() {
                       const buyDiv = document.createElement("div");
                       const buyNow = document.createElement("button");
                       buyDiv.classList.add("center-div");
+                      buyDiv.classList.add("buy");
                       buyDiv.style.paddingBottom = "20px";
                       buyDiv.style.marginTop = "20px";
+                      buyDiv.style.marginLeft = "78px";
                       buyNow.textContent = "Buy Now";
                       buyNow.addEventListener("click", function buy(e) {
                         e.preventDefault();
@@ -703,6 +705,10 @@ function subscriptionModal() {
                         const buyModalbody = document.createElement("div");
                         const modalCancel = document.createElement("div");
                         const contentDiv = document.createElement("div");
+                        const importantDiv = document.createElement("div");
+                        const importantTag = document.createElement("div");
+                        importantTag.classList.add("important-tag");
+                        const importantMessage = document.createElement("span");
                         contentDiv.classList.add("content-div");
                         const accNo = document.createElement("h6");
                         accNo.classList.add("acc-details");
@@ -733,7 +739,7 @@ function subscriptionModal() {
                             formInput.type = "email";
                             checkOut.type = "submit";
                             formInput.placeholder =
-                              "Please provide us a valid email to reach you.";
+                              "Email";
                             checkOut.addEventListener("click", function (e) {
                               e.preventDefault();
                               if (formInput.value.toLowerCase() == "") {
@@ -760,7 +766,12 @@ function subscriptionModal() {
                                   });
                               }
                             });
+                            importantTag.textContent = "Important";
+                            importantMessage.textContent = "Email provided will be used to reach you and track your order";
+                            importantDiv.appendChild(importantTag);
+                            importantDiv.appendChild(importantMessage);
                             inputDiv.appendChild(formInput);
+                            inputDiv.appendChild(importantDiv);
                             inputDiv.appendChild(checkOut);
                             emailForm.appendChild(inputDiv);
                             buyModalbody.appendChild(emailForm);
