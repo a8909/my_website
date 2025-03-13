@@ -491,11 +491,11 @@ subscription.forEach((plan) => {
     //if premium it checks again if the premium has the class .standard, which by defualt it has
     //if the click is standard then it remove the standard class from premium and add it to his, and vice-versa.
     if (plan.textContent === "Standard") {
-      let standard = document.querySelector(".web-subscription");
-      let premium = document.querySelector(".web-subscription.standard");
-      if (premium) {
-        premium.classList.remove("standard");
-        standard.classList.add("standard");
+      let premium = document.querySelector(".web-subscription");
+      let standard = document.querySelector(".web-subscription.standard");
+      if (standard) {
+        standard.classList.remove("standard");
+        premium.classList.add("standard");
         backdrop.classList.remove("modal-display");
         aboutContainer.classList.remove("more-margin");
         const queryTemplate = document.querySelectorAll(".template-div");
@@ -545,7 +545,7 @@ function subscriptionModal() {
   isLoading = true;
   const spinner = document.querySelector(".spinner");
   const progress = document.querySelector(".progress-bar");
-  if (isLoading == true) {
+  if (isLoading) {
     progress.style.visibility = "visible";
     progress.style.width = "100%";
     spinner.classList.add("visible");
@@ -554,7 +554,7 @@ function subscriptionModal() {
     .then((response) => response.json())
     .then((body) => {
       isLoading = false;
-      if (isLoading == false) {
+      if (!isLoading) {
         progress.style.width = "0";
         spinner.classList.remove("visible");
         allTemplate = body.data;
@@ -579,7 +579,6 @@ function subscriptionModal() {
                       item.getAttribute("unique") ===
                       templatDiv.getAttribute("unique")
                     ) {
-                      // item.remove();
                       removeImagetemplate(item);
                     }
                   });
@@ -616,7 +615,8 @@ function subscriptionModal() {
                     deleteTemplate(templatDiv.getAttribute("unique")),
                     1
                   );
-
+                  
+                  const imageTemplate = document.querySelector(".image-template");
                   const t = document.querySelectorAll(".template-div");
                   t.forEach((item) => {
                     if (
@@ -631,6 +631,7 @@ function subscriptionModal() {
                 setglobalVariable(deleteImage);
               }
 
+              
               const cls = "template-img";
               const imgTag = `<img class="${cls}" src="${image.imagepath}" alt="template image">`;
               templatDiv.innerHTML = imgTag;
@@ -789,7 +790,7 @@ function subscriptionModal() {
                         closeIcon.style.fontSize = "30px";
                         closeIcon.classList.add("bi", "bi-x");
                         closeIcon.addEventListener("click", function close() {
-                          imagePreviewDiv.removeChild(buyModal);
+                          imagePreviewDiv.removeChild(buyModal)
                         });
                         modalCancel.appendChild(closeIcon);
                         buyModalbody.appendChild(modalCancel);
@@ -1021,8 +1022,13 @@ function removeImagetemplate(removeTemplate) {
 function previousPage() {
   const template = document.querySelectorAll(".template-div");
   const imageTemplate = document.querySelector(".image-template");
+  
   template.forEach((t) => {
     t.classList.remove("invisible");
+     const templateImage = document.querySelector(".template-img.expand");
+     if (templateImage) {
+       templateImage.classList.remove("expand");
+     }
   });
   imageTemplate.classList.add("invisible");
   removeImagetemplate(imageTemplate);
