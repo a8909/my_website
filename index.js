@@ -375,7 +375,7 @@ function showUpload(value) {
 
 function closeUpload() {}
 //By default this should be false. Reason being that the access to the funtion should be enabled if admin want to upload new template
-window.addEventListener("DOMContentLoaded", showUpload(false));
+window.addEventListener("DOMContentLoaded", showUpload(true));
 
 //This is used to target the scroll using getBoundingClientReact(),
 //if the react.top <= window.innerHeight means the element top is below the window inner height the effect come alive
@@ -559,79 +559,27 @@ function subscriptionModal() {
         spinner.classList.remove("visible");
         allTemplate = body.data;
         if (currentPlan == "premium") {
-          allTemplate.forEach((image) => {
-            if (image.plan == "premium") {
-              let templatDiv = document.createElement("div");
-              templatDiv.classList.add("template-div");
-              templatDiv.setAttribute("unique", image.id);
-              if (environmentProduction == false) {
-                const deleteImage = document.createElement("i");
-                deleteImage.classList.add("bi", "bi-trash3");
-                deleteImage.addEventListener("click", deleteItem);
-                function deleteItem() {
-                  allTemplate.splice(
-                    deleteTemplate(templatDiv.getAttribute("unique")),
-                    1
-                  );
-                  const t = document.querySelectorAll(".template-div");
-                  t.forEach((item) => {
-                    if (
-                      item.getAttribute("unique") ===
-                      templatDiv.getAttribute("unique")
-                    ) {
-                      removeImagetemplate(item);
-                    }
-                  });
-                }
-                setglobalVariable(deleteImage);
-              }
-
-              const cls = "template-img";
-              const imgTag = `<img class="${cls}" src="${image.imagepath}" alt="template image">`;
-              templatDiv.innerHTML = imgTag;
-              environmentProduction == false
-                ? templatDiv.appendChild(getglobalVariable())
-                : null;
-              modalContent.append(templatDiv);
-              planControl(templatDiv);
-            }
-          });
+          activePlan(currentPlan);
         } else {
+          currentPlan = "standard";
+          activePlan(currentPlan);
+        }
+
+        function activePlan(plan) {
           allTemplate.forEach((image) => {
-            if (image.plan == "standard") {
+            if (image.plan == plan) {
               let templatDiv = document.createElement("div");
               templatDiv.classList.add("template-div");
               templatDiv.setAttribute("unique", image.id);
               if (environmentProduction == false) {
                 const deleteImage = document.createElement("i");
                 deleteImage.classList.add("bi", "bi-trash3");
-                deleteImage.addEventListener("click", deleteItem, {
-                  signal: deleteImage.setAttribute("delete", "standard-plan"),
-                });
-                //This funtion delete i item from the list of items, checks the DOM if the templateDiv exist 
-                //and if it does exist loop through and remove the element from DOM
-                function deleteItem() {
-                  allTemplate.splice(
-                    deleteTemplate(templatDiv.getAttribute("unique")),
-                    1
-                  );
-                  
-                  const imageTemplate = document.querySelector(".image-template");
-                  const t = document.querySelectorAll(".template-div");
-                  t.forEach((item) => {
-                    if (
-                      item.getAttribute("unique") ===
-                      templatDiv.getAttribute("unique")
-                    ) {
-                      // item.remove();
-                      removeImagetemplate(item);
-                    }
-                  });
-                }
+                deleteImage.addEventListener("click", () => deleteItem(templatDiv.getAttribute("unique"))
+                );
+
                 setglobalVariable(deleteImage);
               }
 
-              
               const cls = "template-img";
               const imgTag = `<img class="${cls}" src="${image.imagepath}" alt="template image">`;
               templatDiv.innerHTML = imgTag;
@@ -672,13 +620,11 @@ function subscriptionModal() {
                   if (data) {
                     setTemplate(identifier);
                     if (getTemplate() == identifier) {
-                      const template =
-                        document.querySelectorAll(".template-div");
+                      const template = document.querySelectorAll(".template-div");
+                      const imageTemplate = document.querySelector(".image-template");
 
                       template.forEach((t) => {
                         t.classList.add("invisible");
-                        const imageTemplate =
-                          document.querySelector(".image-template");
                         if (imageTemplate) {
                           removeImagetemplate(imageTemplate);
                         }
@@ -1033,3 +979,17 @@ function previousPage() {
   imageTemplate.classList.add("invisible");
   removeImagetemplate(imageTemplate);
 }
+
+//This funtion delete i item from the list of items, checks the DOM if the templateDiv exist 
+//and if it does exist loop through and remove the element from DOM
+function deleteItem(templatDiv) {
+  allTemplate.splice(deleteTemplate(templatDiv, 1));
+  const t = document.querySelectorAll(".template-div");
+  t.forEach((item) => {
+    if (item.getAttribute("unique") === templatDiv) {
+      removeImagetemplate(item);
+    }
+  });
+}
+
+

@@ -301,7 +301,7 @@ form{
     max-width: 400px;
     margin: auto auto 10px auto;
     padding: 20px;
-    height: 500px;
+    height: 513px;
     @media(max-width: 375px){
         max-width: 300px;
         padding: 20px;
